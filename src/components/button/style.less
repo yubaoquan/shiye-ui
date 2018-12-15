@@ -1,0 +1,200 @@
+.shiye-btn {
+  display: inline-block;
+  height: 28px;
+  padding: 0 15px;
+  line-height: 28px;
+  font-size: 12px;
+  border-radius: 2px;
+  border: 1px solid #bbb;
+  vertical-align: middle;
+  transition: color, border-color, background-color;
+  transition-duration: 200ms;
+  transition-timing-function: linear;
+  cursor: pointer;
+  color: #333;
+  box-sizing: border-box;
+
+  & + & {
+    margin-left: 10px;
+  }
+
+  &:hover {
+    border-color: #38f;
+    color: #38f;
+  }
+
+  &.primary {
+    color: #fff;
+    background-color: #38f;
+    border-color: #38f;
+
+    &:hover {
+      background-color: #59f;
+      border-color: #59f;
+    }
+  }
+
+  &.outline, &.primary.outline {
+    background-color: #fff;
+    border-color: #38f;
+    color: #38f;
+
+    &:hover {
+      border-color: #59f;
+      color: #59f;
+    }
+  }
+
+  &.danger {
+    background-color: #f44;
+    border-color: #f44;
+    color: #fff;
+
+    &:hover {
+      background-color: #f66;
+      border-color: #f66;
+    }
+
+    &.outline {
+      background-color: #fff;
+      color: #f44;
+
+      &:hover {
+        color: #f66;
+        border-color: #f66;
+      }
+    }
+  }
+
+  &.success {
+    background-color: #4b0;
+    border-color: #4b0;
+    color: #fff;
+
+    &:hover {
+      background-color: #6c2;
+      border-color: #6c2;
+    }
+
+    &.outline {
+      background-color: #fff;
+      color: #4b0;
+
+      &:hover {
+        border-color: #6c2;
+        color: #6c2;
+      }
+    }
+  }
+
+  &.loading {
+    cursor: not-allowed;
+    position: relative;
+    .shiye-btn__name {
+      visibility: hidden;
+    }
+    &:hover {
+      border-color: #bbb;
+    }
+    &:after {
+      content: "";
+      border: 3px solid;
+      border-color: #666 transparent transparent;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 16px;
+      height: 16px;
+      margin-left: -8px;
+      margin-top: -8px;
+      border-radius: 50%;
+      box-sizing: border-box;
+      animation: rotate .6s linear infinite;
+    }
+  }
+
+  &.disabled {
+    background-color: #f8f8f8;
+    border-color: #e5e5e5;
+    color: #bbb;
+    cursor: not-allowed;
+  }
+
+  &.large {
+    height: 38px;
+    line-height: 36px;
+    font-size: 14px;
+    padding: 0 23px;
+  }
+
+  &.small {
+    height: 26px;
+    line-height: 24px;
+    padding: 0 7px;
+  }
+
+  &.no-border {
+    border: 0;
+  }
+
+  &.link {
+    .shiye-btn__name {
+      color: #333;
+      transition: color, border-color, background-color;
+      transition-duration: 200ms;
+      transition-timing-function: linear;
+    }
+    &:hover .shiye-btn__name {
+      color: #38f;
+    }
+  }
+
+  &.primary {
+    .shiye-icon:before {
+      color: #fff;
+    }
+  }
+
+  .shiye-icon:before {
+    vertical-align: -2px;
+    color: #333;
+    margin: 0 2px;
+  }
+}
+
+.shiye-btn-group {
+  & + & {
+    margin-left: 10px;
+  }
+
+  .primary {
+    border-left: 1px solid #59f;
+  }
+
+  .shiye-btn {
+    margin-left: 0;
+
+    & + .shiye-btn {
+      margin-left: -1px;
+      border-radius: 0;
+    }
+
+    &:first-child {
+      border-radius: 2px 0 0 2px;
+    }
+
+    &:last-child {
+      border-radius: 0 2px 2px 0;
+    }
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: translateZ(0);
+  }
+
+  to {
+    transform: translateZ(360deg);
+  }
+}
