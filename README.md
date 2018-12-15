@@ -17,3 +17,4 @@
 - Icon组件弄了几个最简单的;
 
 ### 效果截图
+![效果图](./images/shiye-demo-1.png)
