@@ -115,8 +115,11 @@ module.exports = function() {
         reject(err);
       }
       const entry = dirs.reduce((result, dir) => {
-        console.info(dir)
-        result[dir] = path.resolve('./src/components', dir, 'index.js');
+        const filePath = path.resolve('./src/components', dir, 'index.js');
+        // ignore component/base
+        if (fs.existsSync(filePath)) {
+          result[dir] = filePath;
+        }
         return result;
       }, {
         index: './src/index.js',
