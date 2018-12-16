@@ -61,9 +61,12 @@
   border-radius: 2px;
   border: 1px solid #bbb;
   vertical-align: middle;
+  -webkit-transition: color, border-color, background-color;
   transition: color, border-color, background-color;
-  transition-duration: 200ms;
-  transition-timing-function: linear;
+  -webkit-transition-duration: 200ms;
+          transition-duration: 200ms;
+  -webkit-transition-timing-function: linear;
+          transition-timing-function: linear;
   cursor: pointer;
   color: #333;
   box-sizing: border-box;
@@ -156,7 +159,8 @@
   margin-top: -8px;
   border-radius: 50%;
   box-sizing: border-box;
-  animation: rotate 0.6s linear infinite;
+  -webkit-animation: rotate 0.6s linear infinite;
+          animation: rotate 0.6s linear infinite;
 }
 .shiye-btn.disabled {
   background-color: #f8f8f8;
@@ -180,9 +184,12 @@
 }
 .shiye-btn.link .shiye-btn__name {
   color: #333;
+  -webkit-transition: color, border-color, background-color;
   transition: color, border-color, background-color;
-  transition-duration: 200ms;
-  transition-timing-function: linear;
+  -webkit-transition-duration: 200ms;
+          transition-duration: 200ms;
+  -webkit-transition-timing-function: linear;
+          transition-timing-function: linear;
 }
 .shiye-btn.link:hover .shiye-btn__name {
   color: #38f;
@@ -214,12 +221,24 @@
 .shiye-btn-group .shiye-btn:last-child {
   border-radius: 0 2px 2px 0;
 }
-@keyframes rotate {
+@-webkit-keyframes rotate {
   from {
-    transform: rotate(0);
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
   }
   to {
-    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@keyframes rotate {
+  from {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
   }
 }
 

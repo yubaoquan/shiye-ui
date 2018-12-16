@@ -81,6 +81,17 @@ const config = {
             },
           },
           {
+            loader: 'postcss-loader',
+            options: {
+              config: {
+                path: './postcss.config.js',
+                ctx: {
+                  env: 'development',
+                },
+              },
+            },
+          },
+          {
             loader: 'less-loader',
             options: {
               noIeCompat: true,

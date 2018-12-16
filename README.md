@@ -16,7 +16,7 @@
 - done Button组件;
 - done Icon组件弄了几个最简单的;
 - done Layout
-- building... postcss
+- done postcss (暂时加个 autoprefixer 功能)
 - building... Form 及其依赖的组件
   - Form.InputField
   - Pop
