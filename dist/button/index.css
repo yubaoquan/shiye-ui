@@ -75,6 +75,10 @@
   border-color: #38f;
   color: #38f;
 }
+.shiye-btn.block {
+  display: block;
+  width: 100%;
+}
 .shiye-btn.primary {
   color: #fff;
   background-color: #38f;

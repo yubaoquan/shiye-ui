@@ -5,7 +5,16 @@ import './style.less';
 
 class Icon extends Component {
   static propTypes = {
-    type: PropTypes.string,
+    type: PropTypes.oneOf([
+      'share',
+      'previous',
+      'next',
+      'check',
+      'wrong',
+      'search',
+      'download',
+      'sqauare',
+    ]),
     className: PropTypes.string,
   }
 
