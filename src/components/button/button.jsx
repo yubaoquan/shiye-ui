@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from '../icon';
-import './style.less';
+import Base from '../base';
+import './style';
 
-class Button extends Component {
+class Button extends Base {
   static propTypes = {
     outline: PropTypes.bool,
     loading: PropTypes.bool,
@@ -15,8 +16,6 @@ class Button extends Component {
     size: PropTypes.oneOf(['large', 'medium', 'small']),
     href: PropTypes.string,
     target: PropTypes.oneOf(['_blank', '']),
-    className: PropTypes.string,
-    prefix: PropTypes.string,
     icon: PropTypes.string,
     htmlType: PropTypes.oneOf(Component.validHtmlTypes),
     onClick: PropTypes.func,
@@ -35,10 +34,8 @@ class Button extends Component {
     bordered: true,
     href: '',
     target: '',
-    className: '',
     icon: '',
     htmlType: 'button',
-    prefix: 'shiye',
     style: {},
   }
 
@@ -84,8 +81,8 @@ class Button extends Component {
 
   render() {
     const props = this.props;
-    const { prefix, block, outline, loading, disabled } = props;
-    const className = classNames(`${prefix || 'shiye'}-btn`, props.className, {
+    const { block, outline, loading, disabled } = props;
+    const className = classNames(this.prefixClass('-btn'), props.className, {
       block,
       outline,
       loading,

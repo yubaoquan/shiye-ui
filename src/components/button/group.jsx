@@ -1,24 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Base from '../base';
 
-class BtnGroup extends Component {
+class BtnGroup extends Base {
   static propTypes = {
     style: PropTypes.object,
-    className: PropTypes.string,
-    prefix: PropTypes.string,
   }
 
   static defaultProps = {
     style: {},
-    className: '',
-    prefix: 'shiye',
   }
 
 
   render() {
-    const { children, style, className, prefix } = this.props;
-    const cn = classNames(`${prefix || 'shiye'}-btn-group`, className);
+    const { children, style, className } = this.props;
+    const cn = classNames(this.prefixClass(`-btn-group`), className);
     return <span
       className={cn}
       style={style}

@@ -1,5 +1,5 @@
 const path = require('path');
-const clientRoot = path.resolve(__dirname, 'client');
+const src = path.resolve(__dirname, 'src');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const fs = require('fs');
@@ -8,9 +8,10 @@ const config = {
   mode: 'production',
   entry: {},
   resolve: {
-    extensions: [ '.js', 'jsx', '.css', '.less' ],
+    extensions: [ '.js', '.jsx', '.css', '.less' ],
     alias: {
-      root: clientRoot,
+      root: src,
+      utils: path.resolve(src, 'utils'),
     },
   },
   output: {

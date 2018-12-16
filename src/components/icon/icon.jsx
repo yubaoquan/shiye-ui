@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import './style.less';
+import './style';
 
 class Icon extends Component {
   static propTypes = {
@@ -15,12 +15,10 @@ class Icon extends Component {
       'download',
       'sqauare',
     ]),
-    className: PropTypes.string,
   }
 
   static defaultProps = {
     type: 'square',
-    classnames: null,
   }
 
   static iconClassMap = {

@@ -13,8 +13,9 @@
 现在做也不晚. 视觉和交互照抄[zent](https://youzan.github.io/zent/)
 
 ### 进度
-- Button组件开发95%;
-- Icon组件弄了几个最简单的;
+- done Button组件;
+- done Icon组件弄了几个最简单的;
+- building Layout
 
 ### 效果截图
 ![效果图](./images/btn-demo.png)
