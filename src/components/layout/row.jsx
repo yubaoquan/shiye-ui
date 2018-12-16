@@ -1,22 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import classNames from 'classnames';
-import prefixer from 'utils/prefix';
+import Base from '../base';
 
-class Row extends Component {
-  static propTypes = {
-    className: PropTypes.string,
-    prefix: PropTypes.string,
-  }
-
-  static defaultProps = {
-    className: null,
-    prefix: 'shiye',
-  }
+class Row extends Base {
 
   render() {
-    const { className, prefix, children } = this.props;
-    const cn = classNames(prefixer(prefix, '-row'), className);
+    const { className, children } = this.props;
+    const cn = classNames(this.prefixClass('-row'), className);
     return <div className={cn}>{children}</div>
   }
 }

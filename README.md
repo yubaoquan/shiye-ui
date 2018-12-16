@@ -10,12 +10,14 @@
 
 为什么早没想到做一个组件库呢!!!
 
-现在做也不晚. 视觉和交互照抄[zent](https://youzan.github.io/zent/)
+现在做也不晚. 视觉和交互照抄 [**zent**](https://youzan.github.io/zent/)
 
 ### 进度
 - done Button组件;
 - done Icon组件弄了几个最简单的;
-- building Layout
+- done Layout
+- building Form 及其依赖的组件
 
 ### 效果截图
-![效果图](./images/btn-demo.png)
+![Button 效果图](./images/btn-demo.png)
+![Layout 效果图](./images/layout-demo.png)
