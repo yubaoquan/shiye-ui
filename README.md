@@ -20,6 +20,8 @@
 - building... Form 及其依赖的组件
   - Form.InputField
   - Pop
+  - Input
+    - type=textarea
 
 ### 效果截图
 ![Button 效果图](./images/btn-demo.png)

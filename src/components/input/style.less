@@ -1,0 +1,83 @@
+.shiye-input-wrapper, .shiye-textarea-wrapper {
+  display: flex;
+  position: relative;
+  color: #333;
+  font-size: 12px;
+}
+
+.shiye-input-wrapper {
+  height: 30px;
+  max-height: 36px;
+}
+
+.shiye-textarea-wrapper {
+  height: auto;
+  max-height: none;
+}
+
+.shiye-input, .shiye-textarea {
+  flex: 1;
+  display: inline-block;
+  min-width: 80px;
+  appearance: none;
+  border: 1px solid #bbb;
+  transition-property: border, box-shadow;
+  transition-duration: .2s;
+  margin: 0;
+  transition-timing-function: linear;
+
+  &:focus {
+    outline: none;
+    border: 1px solid #38f;
+    box-shadow: 0 0 5px #bdf;
+  }
+
+  &::placeholder {
+    color: #999;
+    font-size: 12px;
+  }
+}
+
+.shiye-textarea {
+  height: 54px;
+  padding: 5px 10px;
+  line-height: 1.5;
+  border-radius: 2px;
+}
+
+.shiye-input {
+  padding: 0 10px;
+
+  &.only-before {
+    border-radius: 0 2px 2px 0;
+  }
+
+  &.only-after {
+    border-radius: 2px 0 0 2px;
+  }
+
+  &.both-addon {
+    border-radius: 0;
+  }
+
+  &-addon-before, &-addon-after {
+    display: inline-block;
+    height: 100%;
+    background-color: #e5e5e5;
+    border: 1px solid #bbb;
+    line-height: 28px;
+    padding: 0 5px;
+    box-sizing: border-box;
+  }
+
+  &-addon-before {
+    border-right: 0;
+    border-radius: 2px 0 0 2px;
+  }
+
+  &-addon-after {
+    border-left: 0;
+    border-radius: 0 2px 2px 0;
+  }
+}
+
