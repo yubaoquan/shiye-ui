@@ -11,12 +11,18 @@ class Input extends Base {
     addonAfter: PropTypes.string,
     type: PropTypes.oneOf(['text', 'password', 'textarea']),
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    maxLength: PropTypes.number,
+    onChange: PropTypes.func,
+    showCount: PropTypes.bool,
   }
 
   static defaultProps = {
     type: 'text',
     addonBefore: '',
     addonAfter: '',
+    onChange: () => {},
+    showCount: false,
+    value: '',
   }
 
   constructor(props) {
@@ -24,15 +30,40 @@ class Input extends Base {
     this.state = { value: props.value };
   }
 
+  onChange = (e) => {
+    const { target: { value } } = e;
+    const { maxLength, onChange } = this.props;
+    console.info(value.length, maxLength, value.slice(0, maxLength))
+    this.setState({ value: value.length > maxLength ? value.slice(0, maxLength) : value });
+    onChange && onChange(e);
+  }
+
+  renderCount() {
+    const { maxLength } = this.props;
+    const currentLength = this.state.value.length;
+    return (
+      <span className={this.prefixClass('-textarea-count')}>
+        {currentLength}/{maxLength}
+      </span>
+    )
+  }
+
   renderTextarea() {
     const cn = this.prefixClass('-textarea');
-    const { placeholder, className } = this.props;
-    const { value } = this.props;
+    const { placeholder, className, showCount, maxLength } = this.props;
+    const { value } = this.state;
     const wrapperClass = this.prefixClass('-textarea-wrapper', className);
 
     return (
       <div className={wrapperClass}>
-        <textarea className={cn} placeholder={placeholder} value={value} />
+        <textarea
+          className={cn}
+          placeholder={placeholder}
+          value={value}
+          onChange={this.onChange}
+          maxLength={maxLength}
+        />
+        {showCount && this.renderCount()}
       </div>
     );
   }
@@ -44,6 +75,7 @@ class Input extends Base {
       type,
       addonBefore,
       addonAfter,
+      maxLength,
     } = this.props;
 
     if (type === 'textarea') {
@@ -64,8 +96,10 @@ class Input extends Base {
 
     const inputProps = {
       type,
+      maxLength,
       placeholder,
       className: cn,
+      onChange: this.onChange,
     };
 
     const { value } = this.state;
