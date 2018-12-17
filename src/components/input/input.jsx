@@ -32,9 +32,9 @@ class Input extends Base {
 
   onChange = (e) => {
     const { target: { value } } = e;
-    const { maxLength, onChange } = this.props;
-    console.info(value.length, maxLength, value.slice(0, maxLength))
-    this.setState({ value: value.length > maxLength ? value.slice(0, maxLength) : value });
+    const { onChange } = this.props;
+    this.setState({ value });
+    // TODO Base 组件中实现一个 callFn(fn, args)
     onChange && onChange(e);
   }
 
