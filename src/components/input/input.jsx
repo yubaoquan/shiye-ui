@@ -32,7 +32,7 @@ class Input extends Base {
 
     return (
       <div className={wrapperClass}>
-        <textarea className={cn} placeholder={placeholder}>{value}</textarea>
+        <textarea className={cn} placeholder={placeholder} value={value} />
       </div>
     );
   }
