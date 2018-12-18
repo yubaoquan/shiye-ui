@@ -78,6 +78,9 @@
   border-color: #38f;
   color: #38f;
 }
+.shiye-btn:focus {
+  outline: 0;
+}
 .shiye-btn.block {
   display: block;
   width: 100%;

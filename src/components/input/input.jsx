@@ -2,6 +2,7 @@ import React from 'react';
 import Base from '../base';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import Icon from '../icon';
 import './style';
 
 class Input extends Base {
@@ -11,31 +12,35 @@ class Input extends Base {
     addonAfter: PropTypes.string,
     type: PropTypes.oneOf(['text', 'password', 'textarea']),
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     maxLength: PropTypes.number,
-    onChange: PropTypes.func,
     showCount: PropTypes.bool,
+    showClear: PropTypes.bool,
+    disabled: PropTypes.bool,
+    readOnly: PropTypes.bool,
+    onChange: PropTypes.func,
+    onPressEnter: PropTypes.func,
+    onKeyDown: PropTypes.func,
   }
 
   static defaultProps = {
     type: 'text',
-    addonBefore: '',
-    addonAfter: '',
-    onChange: () => {},
     showCount: false,
     value: '',
+    defaultValue: '',
   }
 
   constructor(props) {
     super(props);
-    this.state = { value: props.value };
+    this.inputRef = React.createRef();
+    const value = props.value === undefined ? props.defaultValue : props.value;
+    this.state = { value };
   }
 
   onChange = (e) => {
     const { target: { value } } = e;
-    const { onChange } = this.props;
     this.setState({ value });
-    // TODO Base 组件中实现一个 callFn(fn, args)
-    onChange && onChange(e);
+    this.safeCall(this.props.onChange, [e]);
   }
 
   renderCount() {
@@ -48,21 +53,52 @@ class Input extends Base {
     )
   }
 
-  renderTextarea() {
+  onKeyDown = (e) => {
+    this.safeCall(this.props.onKeyDown, [e]);
+    if (e.keyCode === 13) {
+      this.safeCall(this.props.onPressEnter, [e]);
+    }
+  }
+
+  onClearClick = () => {
+    this.setState({ value: '' });
+  }
+
+  focus() {
+    this.inputRef.current.focus();
+  }
+
+  select(start, end) {
+    this.focus();
+    if (
+      typeof start === 'number'
+      && typeof end === 'number'
+      && start >= 0
+      && start <= end
+    ) {
+      this.inputRef.current.setSelectionRange(start, end);
+    } else {
+      this.inputRef.current.select();
+    }
+  }
+
+  renderTextarea(commonProps) {
     const cn = this.prefixClass('-textarea');
-    const { placeholder, className, showCount, maxLength } = this.props;
-    const { value } = this.state;
-    const wrapperClass = this.prefixClass('-textarea-wrapper', className);
+    const { className, showCount } = this.props;
+    const wrapperClass = classNames(
+      this.prefixClass('-textarea-wrapper'),
+      className,
+      { disabled: commonProps.disabled, },
+    );
+
+    const textareaProps = {
+      className: cn,
+      ...commonProps,
+    }
 
     return (
       <div className={wrapperClass}>
-        <textarea
-          className={cn}
-          placeholder={placeholder}
-          value={value}
-          onChange={this.onChange}
-          maxLength={maxLength}
-        />
+        <textarea {...textareaProps} />
         {showCount && this.renderCount()}
       </div>
     );
@@ -76,13 +112,11 @@ class Input extends Base {
       addonBefore,
       addonAfter,
       maxLength,
+      showClear,
+      disabled,
+      readOnly,
     } = this.props;
 
-    if (type === 'textarea') {
-      return this.renderTextarea();
-    }
-
-    const wrapperClassName = this.prefixClass('-input-wrapper', className);
 
 
     const cn = classNames(this.prefixClass('-input'), {
@@ -93,22 +127,52 @@ class Input extends Base {
 
     const addonBeforeCn = this.prefixClass('-input-addon-before');
     const addonAfterCn = this.prefixClass('-input-addon-after');
+    const clearBtnCn = this.prefixClass('-input-clear');
 
-    const inputProps = {
-      type,
+    const {
+      onChange,
+      onKeyDown,
+      inputRef,
+      state: { value },
+    } = this;
+
+    const commonProps = {
+      value,
       maxLength,
       placeholder,
+      onChange,
+      onKeyDown,
+      ref: inputRef,
+      disabled: disabled || readOnly,
+    };
+    const inputProps = {
+      ...commonProps,
+      type,
       className: cn,
-      onChange: this.onChange,
     };
 
-    const { value } = this.state;
+    if (type === 'textarea') {
+      return this.renderTextarea(commonProps);
+    }
+
+    const wrapperClassName = classNames(
+      this.prefixClass('-input-wrapper'),
+      className,
+      { disabled: commonProps.disabled }
+    );
+
+    const shouldShowClear = showClear && String(value).length > 0;
 
     return (
       <div className={wrapperClassName}>
         {addonBefore && <span className={addonBeforeCn}>{addonBefore}</span>}
-        <input {...inputProps} value={value} />
+        <input {...inputProps} />
         {addonAfter && <span className={addonAfterCn}>{addonAfter}</span>}
+        {shouldShowClear &&
+          <span className="icon-wrapper" onClick={this.onClearClick}>
+            <Icon type="wrong" className={clearBtnCn} />
+          </span>
+        }
       </div>
     );
   }

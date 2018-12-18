@@ -78,6 +78,9 @@
   border-color: #38f;
   color: #38f;
 }
+.shiye-btn:focus {
+  outline: 0;
+}
 .shiye-btn.block {
   display: block;
   width: 100%;
@@ -250,6 +253,20 @@
   color: #333;
   font-size: 12px;
 }
+.shiye-input-wrapper.disabled .shiye-input,
+.shiye-textarea-wrapper.disabled .shiye-input,
+.shiye-input-wrapper.disabled .shiye-textarea,
+.shiye-textarea-wrapper.disabled .shiye-textarea {
+  cursor: not-allowed;
+}
+.shiye-input-wrapper.disabled .shiye-input-addon-before,
+.shiye-textarea-wrapper.disabled .shiye-input-addon-before,
+.shiye-input-wrapper.disabled .shiye-input-addon-after,
+.shiye-textarea-wrapper.disabled .shiye-input-addon-after {
+  border-color: #e5e5e5;
+  background-color: #f2f2f2;
+  color: #cacaca;
+}
 .shiye-input-wrapper {
   height: 30px;
   max-height: 36px;
@@ -304,6 +321,12 @@
   color: #999;
   font-size: 12px;
 }
+.shiye-input:disabled,
+.shiye-textarea:disabled {
+  border-color: #e5e5e5;
+  background-color: #f8f8f8;
+  color: #cacaca;
+}
 .shiye-textarea {
   height: 54px;
   padding: 5px 10px;
@@ -339,6 +362,19 @@
 .shiye-input-addon-after {
   border-left: 0;
   border-radius: 0 2px 2px 0;
+}
+.shiye-input-clear {
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  width: 10px;
+  height: 10px;
+  background: #bbb;
+  border-radius: 50%;
+  padding: 1px;
+  font-size: 10px;
+  color: #fff;
+  cursor: pointer;
 }
 
 .shiye-row:after {

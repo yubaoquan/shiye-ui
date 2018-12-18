@@ -20,6 +20,12 @@ class Base extends Component {
     }
     return `shiye${suffix}`;
   }
+
+  safeCall(fn, args = []) {
+    if (typeof fn === 'function') {
+      fn.apply(null, args);
+    }
+  }
 }
 
 export default Base;

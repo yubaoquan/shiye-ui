@@ -21,7 +21,12 @@
   - Form.InputField
   - Pop
   - Input
-    - type=textarea
+    - autoFocus
+    - autoSelect
+    - width
+    - initSelectionStart
+    - initSelectionEnd
+    - autoSize
 
 ### 效果截图
 ![Button 效果图](./images/btn-demo.png)
