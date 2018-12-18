@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Icon from '../icon';
 import './style';
+import { throttle } from 'lodash/function';
 
 class Input extends Base {
   static propTypes = {
@@ -14,6 +15,9 @@ class Input extends Base {
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     maxLength: PropTypes.number,
+    autoSize: PropTypes.bool,
+    autoFocus: PropTypes.bool,
+    autoSelect: PropTypes.bool,
     showCount: PropTypes.bool,
     showClear: PropTypes.bool,
     disabled: PropTypes.bool,
@@ -21,6 +25,7 @@ class Input extends Base {
     onChange: PropTypes.func,
     onPressEnter: PropTypes.func,
     onKeyDown: PropTypes.func,
+    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }
 
   static defaultProps = {
@@ -37,11 +42,34 @@ class Input extends Base {
     this.state = { value };
   }
 
+  componentDidMount() {
+    if (this.props.autoFocus) {
+      this.focus();
+    }
+    let { initSelectionStart, initSelectionEnd, value } = this.props;
+    if (initSelectionEnd !== undefined && initSelectionStart !== undefined) {
+      initSelectionStart = initSelectionStart || 0;
+      initSelectionEnd = initSelectionEnd || value.length;
+      this.select(initSelectionStart, initSelectionEnd);
+    } else if (this.props.autoSelect) {
+      this.select();
+    }
+  }
+
   onChange = (e) => {
     const { target: { value } } = e;
+    if (this.props.autoSize && this.props.type === 'textarea') {
+      this.autoSizeTextarea();
+    }
     this.setState({ value });
     this.safeCall(this.props.onChange, [e]);
   }
+
+  autoSizeTextarea = throttle(() => {
+    const textarea = this.inputRef.current;
+    textarea.style.height = '1px';
+    textarea.style.height = (25 + textarea.scrollHeight) + 'px';
+  }, 300)
 
   renderCount() {
     const { maxLength } = this.props;
@@ -82,9 +110,9 @@ class Input extends Base {
     }
   }
 
-  renderTextarea(commonProps) {
+  renderTextarea(commonProps, style = {}) {
     const cn = this.prefixClass('-textarea');
-    const { className, showCount } = this.props;
+    const { className, showCount, autoSize } = this.props;
     const wrapperClass = classNames(
       this.prefixClass('-textarea-wrapper'),
       className,
@@ -93,15 +121,26 @@ class Input extends Base {
 
     const textareaProps = {
       className: cn,
+      style: {
+        resize: autoSize ? 'none' : 'both',
+      },
       ...commonProps,
     }
 
     return (
-      <div className={wrapperClass}>
+      <div className={wrapperClass} style={style}>
         <textarea {...textareaProps} />
         {showCount && this.renderCount()}
       </div>
     );
+  }
+
+  getStyle(width) {
+    if (width !== undefined) {
+      const widthStr = String(width).trim();
+      const inputWidth = /^\d+$/.test(widthStr) ? `${widthStr}px` : widthStr;
+      return { width: inputWidth };
+    }
   }
 
   render() {
@@ -115,9 +154,8 @@ class Input extends Base {
       showClear,
       disabled,
       readOnly,
+      width,
     } = this.props;
-
-
 
     const cn = classNames(this.prefixClass('-input'), {
       'only-before': addonBefore && !addonAfter,
@@ -151,8 +189,9 @@ class Input extends Base {
       className: cn,
     };
 
+    const style = this.getStyle(width);
     if (type === 'textarea') {
-      return this.renderTextarea(commonProps);
+      return this.renderTextarea(commonProps, style);
     }
 
     const wrapperClassName = classNames(
@@ -164,7 +203,7 @@ class Input extends Base {
     const shouldShowClear = showClear && String(value).length > 0;
 
     return (
-      <div className={wrapperClassName}>
+      <div className={wrapperClassName} style={style}>
         {addonBefore && <span className={addonBeforeCn}>{addonBefore}</span>}
         <input {...inputProps} />
         {addonAfter && <span className={addonAfterCn}>{addonAfter}</span>}

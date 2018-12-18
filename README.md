@@ -17,16 +17,10 @@
 - done Icon组件弄了几个最简单的;
 - done Layout
 - done postcss (暂时加个 autoprefixer 功能)
+- done Input
 - building... Form 及其依赖的组件
   - Form.InputField
   - Pop
-  - Input
-    - autoFocus
-    - autoSelect
-    - width
-    - initSelectionStart
-    - initSelectionEnd
-    - autoSize
 
 ### 效果截图
 ![Button 效果图](./images/btn-demo.png)
