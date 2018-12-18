@@ -22,6 +22,6 @@
   - Form.InputField
   - Pop
 
-### 效果截图
-![Button 效果图](./images/btn-demo.png)
-![Layout 效果图](./images/layout-demo.png)
+### 效果/进度截图
+
+![总进度图](./images/total-progress.min.jpg)
