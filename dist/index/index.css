@@ -528,6 +528,10 @@
   margin-left: 95.83333333%;
 }
 
+.shiye-pop {
+  outline: 1px solid black;
+}
+
 .shiye-form {
   background-color: #bbb;
 }
