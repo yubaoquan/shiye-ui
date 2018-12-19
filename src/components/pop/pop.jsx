@@ -11,7 +11,23 @@ class Pop extends Base {
   static propTyps = {
     trigger: PropTypes.oneOf(['hover', 'click', 'focus']),
     content: PropTypes.node,
-    position: PropTypes.oneOf(['top-center']),
+    position: PropTypes.oneOf([
+      'top-left',
+      'top-center',
+      'top-right',
+
+      'left-top',
+      'left-center',
+      'left-bottom',
+
+      'bottom-left',
+      'bottom-center',
+      'bottom-right',
+
+      'right-top',
+      'right-center',
+      'right-bottom',
+    ]),
     centerArrow: PropTypes.bool,
     wrapperClassName: PropTypes.string,
   };
@@ -23,7 +39,14 @@ class Pop extends Base {
 
   state = {
     show: false,
+    portalStyle: {},
   };
+
+  constructor(props) {
+    super(props);
+    this.triggerRef = React.createRef();
+    this.portalRef = React.createRef();
+  }
 
   componentDidMount() {
     const { trigger } = this.props;
@@ -39,34 +62,74 @@ class Pop extends Base {
     }
   }
 
-  onDocumentClick = debounce((e) => {
-    console.info(`click hide`);
-    this.setState({ show: false });
-  }, 100, { leading: true });
+  onDocumentClick = debounce(() => this.hidePop(), 100, { leading: true });
 
-  onMouseEnter = debounce(() => {
-    this.setState({ show: true });
-    console.info('show pop');
-  }, 100, { leading: true });
+  onMouseEnter = debounce(() => this.showPop(), 100, { leading: true });
 
-  onMouseLeave = debounce(() => {
-    this.setState({ show: false });
-    console.info('hide pop');
-  }, 100, { leading: true });
+  onMouseLeave = debounce(() => this.hidePop(), 100, { leading: true });
 
   onClick = debounce((e) => {
-    console.info('click show');
     e.nativeEvent.stopImmediatePropagation();
-    this.setState({ show: true });
+    this.showPop();
   }, 100, { leading: true });
 
+  showPop = (e) => {
+    this.adjustPosition();
+    this.setState({ show: true });
+  };
 
-  renderContentWrapper() {
-    const { wrapperClassName } = this.props;
-    const cn = this.prefixClass('-pop-content-wrapper', wrapperClassName);
+  adjustPosition = () => {
+    const triggerNode = this.triggerRef.current;
+    const boundingClientRect = triggerNode.getBoundingClientRect();
 
+    const positionLeftPart = this.props.position.split('-')[0];
+    const portalStyle = this.positionSetter[positionLeftPart](boundingClientRect)
+    this.setState({ portalStyle });
+  };
+
+  positionSetter = {
+    top: ({ left, top, width }) => {
+      return {
+        bottom: `${window.innerHeight - top + 10}px`,
+        left: `${left + (width / 2)}px`,
+      };
+    },
+    left: ({ left, top, height }) => {
+      return {
+        top: `${ top + (height / 2)}px`,
+        right: `${window.innerWidth - left + 10}px`,
+      };
+    },
+    right: ({ right, top, height }) => {
+      return {
+        top: `${ top + (height / 2)}px`,
+        left: `${right + 10}px`,
+      };
+    },
+    bottom: ({ left, bottom, width }) => {
+      return {
+        top: `${bottom + 10}px`,
+        left: `${left + (width / 2)}px`,
+      };
+    },
+  };
+
+  hidePop = (e) => {
+    // this.setState({ show: false });
+  };
+
+  renderContent() {
+    const { wrapperClassName, position } = this.props;
+    const { portalStyle } = this.state;
+    console.info(position)
+    const cn = classNames(this.prefixClass('-pop-content-wrapper'), wrapperClassName, position);
+    console.info(portalStyle)
     return ReactDOM.createPortal(
-      (<div className={cn}>this is content wrapper</div>),
+      (<div
+        className={cn}
+        ref={this.portalRef}
+        style={portalStyle}
+      >this is content wrapper</div>),
       document.body,
     )
   }
@@ -74,9 +137,7 @@ class Pop extends Base {
   render() {
     const { trigger, className, children } = this.props;
     const { show } = this.state;
-    const popProps = {
-
-    };
+    const popProps = {};
     if (trigger === 'hover') {
       popProps.onMouseEnter = this.onMouseEnter;
       popProps.onMouseLeave = this.onMouseLeave;
@@ -98,10 +159,11 @@ class Pop extends Base {
     const cn = classNames(this.prefixClass('-pop-wrapper'), className);
     return (
       <span
+        ref={this.triggerRef}
         className={cn}
         {...popProps}
       >
-        {show && this.renderContentWrapper()}
+        {show && this.renderContent()}
         {focusableChild || this.props.children}
       </span>
     );

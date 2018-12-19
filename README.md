@@ -20,7 +20,7 @@
 - done Input
 - building... Form 及其依赖的组件
   - Form.InputField
-  - Pop
+  - building... Pop
 
 ### 效果/进度截图
 

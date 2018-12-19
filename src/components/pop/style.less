@@ -1,6 +1,18 @@
 .shiye-pop-wrapper {
   display: inline-block;
-  & + & {
-    margin-left: 10px;
+  margin-right: 10px;
+}
+
+.shiye-pop-content-wrapper {
+  position: fixed;
+
+  &.top-left, &.top-center, &.top-right,
+  &.bottom-left, &.bottom-center, &.bottom-right {
+    transform: translateX(-50%);
+  }
+
+  &.left-top, &.left-center, &.left-bottom,
+  &.right-top, &.right-center, &.rigfht-bottom {
+    transform: translateY(-50%);
   }
 }
