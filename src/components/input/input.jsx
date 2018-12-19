@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Icon from '../icon';
 import './style';
 import { throttle } from 'lodash/function';
+import { omit } from 'lodash/object';
 
 class Input extends Base {
   static propTypes = {
@@ -31,15 +32,13 @@ class Input extends Base {
   static defaultProps = {
     type: 'text',
     showCount: false,
-    value: '',
-    defaultValue: '',
   }
 
   constructor(props) {
     super(props);
     this.inputRef = React.createRef();
-    const value = props.value === undefined ? props.defaultValue : props.value;
-    this.state = { value };
+    // const value = props.value === undefined ? props.defaultValue : props.value;
+    // this.state = { value };
   }
 
   componentDidMount() {
@@ -57,11 +56,11 @@ class Input extends Base {
   }
 
   onChange = (e) => {
-    const { target: { value } } = e;
+    // const { target: { value } } = e;
     if (this.props.autoSize && this.props.type === 'textarea') {
       this.autoSizeTextarea();
     }
-    this.setState({ value });
+    // this.setState({ value });
     this.safeCall(this.props.onChange, [e]);
   }
 
@@ -72,8 +71,8 @@ class Input extends Base {
   }, 300)
 
   renderCount() {
-    const { maxLength } = this.props;
-    const currentLength = this.state.value.length;
+    const { maxLength, value } = this.props;
+    const currentLength = value.length;
     return (
       <span className={this.prefixClass('-textarea-count')}>
         {currentLength}/{maxLength}
@@ -89,7 +88,8 @@ class Input extends Base {
   }
 
   onClearClick = () => {
-    this.setState({ value: '' });
+    // this.setState({ value: '' });
+    this.safeCall(this.props.onChange, [{ target: { ...this.props, value: '' }}]);
   }
 
   focus() {
@@ -155,6 +155,7 @@ class Input extends Base {
       disabled,
       readOnly,
       width,
+      value,
     } = this.props;
 
     const cn = classNames(this.prefixClass('-input'), {
@@ -171,7 +172,6 @@ class Input extends Base {
       onChange,
       onKeyDown,
       inputRef,
-      state: { value },
     } = this;
 
     const commonProps = {
@@ -182,6 +182,20 @@ class Input extends Base {
       onKeyDown,
       ref: inputRef,
       disabled: disabled || readOnly,
+      ...omit(this.props, [
+        'className',
+        'prefix',
+        'addonBefore',
+        'addonAfter',
+        'onPressEnter',
+        'width',
+        'showClear',
+        'showCount',
+        'autoSelect',
+        'initSelectionStart',
+        'initSelectionEnd',
+        'autoSize',
+      ]),
     };
     const inputProps = {
       ...commonProps,

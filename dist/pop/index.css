@@ -1,4 +1,7 @@
-.shiye-pop {
-  outline: 1px solid black;
+.shiye-pop-wrapper {
+  display: inline-block;
+}
+.shiye-pop-wrapper + .shiye-pop-wrapper {
+  margin-left: 10px;
 }
 
