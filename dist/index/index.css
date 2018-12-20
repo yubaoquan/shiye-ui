@@ -533,7 +533,7 @@
   margin-right: 10px;
 }
 .shiye-pop-content-wrapper {
-  position: fixed;
+  position: absolute;
 }
 .shiye-pop-content-wrapper.top-left,
 .shiye-pop-content-wrapper.top-center,

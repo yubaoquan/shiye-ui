@@ -87,10 +87,13 @@ class Pop extends Base {
     this.setState({ portalStyle });
   };
 
+  // TODO all position use top and left
   positionSetter = {
     top: ({ left, top, width }) => {
+      const docEle = document.documentElement;
+      const x = docEle.scrollHeight - docEle.scrollTop - top;
       return {
-        bottom: `${window.innerHeight - top + 10}px`,
+        bottom: `${x + 10}px`,
         left: `${left + (width / 2)}px`,
       };
     },
