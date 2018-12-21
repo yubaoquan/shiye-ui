@@ -11,34 +11,35 @@ class Pop extends Base {
   static propTyps = {
     trigger: PropTypes.oneOf(['hover', 'click', 'focus']),
     content: PropTypes.node,
-    // position: PropTypes.oneOf([
-    //   'top-left',
-    //   'top-center',
-    //   'top-right',
+    position: PropTypes.oneOf([
+      'top-left',
+      'top-center',
+      'top-right',
 
-    //   'left-top',
-    //   'left-center',
-    //   'left-bottom',
+      'left-top',
+      'left-center',
+      'left-bottom',
 
-    //   'bottom-left',
-    //   'bottom-center',
-    //   'bottom-right',
+      'bottom-left',
+      'bottom-center',
+      'bottom-right',
 
-    //   'right-top',
-    //   'right-center',
-    //   'right-bottom',
-    // ]),
+      'right-top',
+      'right-center',
+      'right-bottom',
+    ]),
     centerArrow: PropTypes.bool,
     wrapperClassName: PropTypes.string,
   };
 
   static defaultProps = {
     trigger: 'none',
-    // position: 'top-center',
+    position: 'top-center',
   };
 
   state = {
     show: false,
+    mouseOnPortal: false,
     portalStyle: {},
   };
 
@@ -62,28 +63,42 @@ class Pop extends Base {
     }
   }
 
-  onDocumentClick = debounce(() => this.hidePop(), 100, { leading: true });
+  onDocumentClick = debounce((e) => {
+    const clickOnPop = this.triggerRef.current.contains(e.target);
+    if (!clickOnPop) {
+      this.hidePop()
+    }
+  }, 100, { leading: true });
 
   onMouseEnter = debounce(() => this.showPop(), 100, { leading: true });
 
   onMouseLeave = debounce(() => this.hidePop(), 100, { leading: true });
 
   onClick = debounce((e) => {
-    e.nativeEvent.stopImmediatePropagation();
     this.showPop();
   }, 100, { leading: true });
 
   showPop = (e) => {
     this.setState({ show: true });
-  };
+  }
 
   hidePop = (e) => {
-    // this.setState({ show: false });
-  };
+    setTimeout(() => {
+      this.setState({ show: false });
+    }, 200);
+  }
+
+  onMouseEnterPortal = () => {
+    this.setState({ mouseOnPortal: true });
+  }
+
+  onMouseLeavePortal = () => {
+    this.setState({ mouseOnPortal: false });
+  }
 
   render() {
-    const { trigger, className, children, position } = this.props;
-    const { show } = this.state;
+    const { trigger, className, children, position, content } = this.props;
+    const { show, mouseOnPortal } = this.state;
     const popProps = {};
     if (trigger === 'hover') {
       popProps.onMouseEnter = this.onMouseEnter;
@@ -98,8 +113,8 @@ class Pop extends Base {
 
     if (trigger === 'focus' && React.Children.count(children) === 1) {
       focusableChild = React.cloneElement(children, {
-        onFocus: () => {console.info(`focus`)},
-        onBlur: () => {console.info(`blur`)},
+        onFocus: this.showPop,
+        onBlur: this.hidePop,
       });
     }
 
@@ -110,8 +125,19 @@ class Pop extends Base {
         className={cn}
         {...popProps}
       >
-        {show && <PopPortal triggerNode={this.triggerRef.current} position={position} />}
-        {focusableChild || this.props.children}
+        {
+          (show || mouseOnPortal) &&
+          <PopPortal
+            content={content}
+            position={position}
+            triggerNode={this.triggerRef.current}
+            onMouseEnter={this.onMouseEnterPortal}
+            onMouseLeave={this.onMouseLeavePortal}
+          />
+        }
+        {
+          focusableChild || this.props.children
+        }
       </span>
     );
   }

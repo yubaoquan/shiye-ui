@@ -2,7 +2,94 @@
   display: inline-block;
   margin-right: 10px;
 }
-.shiye-pop-content-wrapper {
+.shiye-pop-portal {
   position: absolute;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+  font-size: 12px;
+  border-radius: 2px;
+  z-index: 2000;
+  color: #333;
+}
+.shiye-pop-portal .shiye-pop-portal-content-wrapper {
+  background: #fff;
+  padding: 10px 20px;
+  z-index: 2;
+  position: relative;
+}
+.shiye-pop-portal .pop-arrow {
+  z-index: 1;
+  position: absolute;
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  background-color: #fff;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+}
+.shiye-pop-portal.top::after,
+.shiye-pop-portal.bottom::after {
+  left: 0;
+  width: 100%;
+}
+.shiye-pop-portal.left::after,
+.shiye-pop-portal.right::after {
+  top: 0;
+  height: 100%;
+}
+.shiye-pop-portal.top::after {
+  bottom: -11px;
+}
+.shiye-pop-portal.bottom::after {
+  top: -11px;
+}
+.shiye-pop-portal.left::after {
+  right: -11px;
+}
+.shiye-pop-portal.right::after {
+  left: -11px;
+}
+.shiye-pop-portal::after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 11px;
+  height: 11px;
+}
+.shiye-pop-portal.top-left .pop-arrow {
+  left: 20%;
+  bottom: 0;
+  -webkit-transform: translate3d(-50%, 50%, 0) rotate(45deg);
+          transform: translate3d(-50%, 50%, 0) rotate(45deg);
+}
+.shiye-pop-portal.top-center .pop-arrow {
+  left: 50%;
+  bottom: 0;
+  -webkit-transform: translate3d(-50%, 50%, 0) rotate(45deg);
+          transform: translate3d(-50%, 50%, 0) rotate(45deg);
+}
+.shiye-pop-portal.top-right .pop-arrow {
+  right: 20%;
+  bottom: 0;
+  -webkit-transform: translate3d(50%, 50%, 0) rotate(45deg);
+          transform: translate3d(50%, 50%, 0) rotate(45deg);
+}
+.shiye-pop-portal.bottom-left .pop-arrow {
+  left: 20%;
+  top: 0;
+  -webkit-transform: translate3d(-50%, -50%, 0) rotate(45deg);
+          transform: translate3d(-50%, -50%, 0) rotate(45deg);
+}
+.shiye-pop-portal.bottom-center .pop-arrow {
+  left: 50%;
+  top: 0;
+  -webkit-transform: translate3d(-50%, -50%, 0) rotate(45deg);
+          transform: translate3d(-50%, -50%, 0) rotate(45deg);
+}
+.shiye-pop-portal.bottom-right .pop-arrow {
+  right: 20%;
+  top: 0;
+  -webkit-transform: translate3d(-50%, -50%, 0) rotate(45deg);
+          transform: translate3d(-50%, -50%, 0) rotate(45deg);
 }
 

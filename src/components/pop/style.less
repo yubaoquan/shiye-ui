@@ -3,6 +3,125 @@
   margin-right: 10px;
 }
 
-.shiye-pop-content-wrapper {
+.shiye-pop-portal {
   position: absolute;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+  font-size: 12px;
+  border-radius: 2px;
+  z-index: 2000;
+  color: #333;
+
+  .shiye-pop-portal-content-wrapper {
+    background: #fff;
+    padding: 10px 20px;
+    z-index: 2;
+    position: relative;
+  }
+
+  .pop-arrow {
+    z-index: 1;
+    position: absolute;
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    transform: rotate(45deg);
+    background-color: #fff;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  &.top, &.bottom {
+    &::after {
+      left: 0;
+      width: 100%;
+    }
+  }
+
+  &.left, &.right {
+    &::after {
+      top: 0;
+      height: 100%;
+    }
+  }
+
+  &.top {
+    &::after {
+      bottom: -11px;
+    }
+  }
+
+  &.bottom {
+    &::after {
+      top: -11px;
+    }
+  }
+  &.left {
+    &::after {
+      right: -11px;
+    }
+  }
+  &.right {
+    &::after {
+      left: -11px;
+    }
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 11px;
+    height: 11px;
+  }
+
+  &.top-left {
+    .pop-arrow {
+      left: 20%;
+      bottom: 0;
+      transform: translate3d(-50%, 50%, 0) rotate(45deg);
+    }
+  }
+  &.top-center {
+    .pop-arrow {
+      left: 50%;
+      bottom: 0;
+      transform: translate3d(-50%, 50%, 0) rotate(45deg);
+    }
+  }
+  &.top-right {
+    .pop-arrow {
+      right: 20%;
+      bottom: 0;
+      transform: translate3d(50%, 50%, 0) rotate(45deg);
+    }
+  }
+
+  &.left-top {}
+  &.left-center {}
+  &.left-bottom {}
+
+  &.right-top {}
+  &.right-center {}
+  &.right-bottom {}
+
+  &.bottom-left {
+    .pop-arrow {
+      left: 20%;
+      top: 0;
+      transform: translate3d(-50%, -50%, 0) rotate(45deg);
+    }
+  }
+  &.bottom-center {
+    .pop-arrow {
+      left: 50%;
+      top: 0;
+      transform: translate3d(-50%, -50%, 0) rotate(45deg);
+    }
+  }
+  &.bottom-right {
+    .pop-arrow {
+      right: 20%;
+      top: 0;
+      transform: translate3d(-50%, -50%, 0) rotate(45deg);
+    }
+  }
 }

@@ -25,18 +25,20 @@ class PopPortal extends Base {
       'right-center',
       'right-bottom',
     ]),
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
   }
 
   static defaultProps = {
     position: 'top-center',
   }
 
-  state = {
-    portalStyle: {},
-  }
-
   constructor(props) {
     super(props);
+    this.state = {
+      portalStyle: {},
+      basePosition: props.position.split('-')[0],
+    }
     this.portalRef = React.createRef();
   }
 
@@ -49,7 +51,7 @@ class PopPortal extends Base {
     const portalRect = this.portalRef.current.getBoundingClientRect();
 
     const { scrollTop: baseTop, scrollLeft: baseLeft } = document.documentElement;
-    const positionLeftPart = this.props.position.split('-')[0];
+    const positionLeftPart = this.state.basePosition;
     const portalStyle = this.positionSetter[positionLeftPart]({
       baseTop,
       baseLeft,
@@ -98,18 +100,38 @@ class PopPortal extends Base {
         left: `${baseLeft + left + (width / 2) - (portalWidth / 2)}px`,
       };
     },
-  };
+  }
+
+  onMouseEnter = () => {
+    this.safeCall(this.props.onMouseEnter);
+  }
+
+  onMouseLeave = () => {
+    this.safeCall(this.props.onMouseLeave);
+  }
 
   render() {
-    const { wrapperClassName, position } = this.props;
-    const { portalStyle } = this.state;
-    const cn = classNames(this.prefixClass('-pop-content-wrapper'), wrapperClassName, position);
+    const { wrapperClassName, position, content } = this.props;
+    const { portalStyle, basePosition } = this.state;
+    const cn = classNames(
+      this.prefixClass('-pop-portal'),
+      wrapperClassName,
+      position,
+      basePosition,
+    );
     return ReactDOM.createPortal(
       (<div
         className={cn}
         ref={this.portalRef}
         style={portalStyle}
-      >this is content wrapper</div>),
+        onMouseEnter={this.onMouseEnter}
+        onMouseLeave={this.onMouseLeave}
+      >
+        <div className={this.prefixClass('-pop-portal-content-wrapper')}>
+          {content}
+        </div>
+        <span className="pop-arrow" />
+      </div>),
       document.body,
     )
   }
