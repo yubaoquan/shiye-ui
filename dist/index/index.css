@@ -535,24 +535,6 @@
 .shiye-pop-content-wrapper {
   position: absolute;
 }
-.shiye-pop-content-wrapper.top-left,
-.shiye-pop-content-wrapper.top-center,
-.shiye-pop-content-wrapper.top-right,
-.shiye-pop-content-wrapper.bottom-left,
-.shiye-pop-content-wrapper.bottom-center,
-.shiye-pop-content-wrapper.bottom-right {
-  -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
-}
-.shiye-pop-content-wrapper.left-top,
-.shiye-pop-content-wrapper.left-center,
-.shiye-pop-content-wrapper.left-bottom,
-.shiye-pop-content-wrapper.right-top,
-.shiye-pop-content-wrapper.right-center,
-.shiye-pop-content-wrapper.rigfht-bottom {
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-}
 
 .shiye-form {
   background-color: #bbb;
