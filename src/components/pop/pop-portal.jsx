@@ -4,6 +4,9 @@ import Base from '../base';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import { pick } from 'lodash/object';
+import basePositionSetters from './position-setters/base';
+import centerPositionSetters from './position-setters/center';
+import offsetPositionSetters from './position-setters/offset';
 
 class PopPortal extends Base {
 
@@ -60,79 +63,15 @@ class PopPortal extends Base {
       portalHeight: portalRect.height,
     };
     if (position.includes('center')) {
-      const portalStyle = this.centerPositionSetters[position](posParams);
+      const portalStyle = centerPositionSetters[position](posParams);
       this.setState({ portalStyle });
     } else {
       const [basePos, offsetPos] = this.props.position.split('-');
-      const basePosStyle = this.basePositionSetters[basePos](posParams);
-      const offsetPosStyle = this.offsetPositionSetters[offsetPos](posParams);
+      const basePosStyle = basePositionSetters[basePos](posParams);
+      const offsetPosStyle = offsetPositionSetters[offsetPos](posParams);
       this.setState({ portalStyle: { ...basePosStyle, ...offsetPosStyle} });
     }
   };
-
-  // top-x left-x bottom-x right-x
-  basePositionSetters = {
-    top: ({ baseTop, top, portalHeight }) => {
-      return { top: `${baseTop + top - portalHeight - 10}px` };
-    },
-    left: ({ baseLeft, left, portalWidth }) => {
-      return { left: `${baseLeft + left - portalWidth - 10}px` };
-    },
-    right: ({ baseLeft, right }) => {
-      return { left: `${baseLeft + right + 10}px` };
-    },
-    bottom: ({ baseTop, bottom }) => {
-      return { top: `${baseTop + bottom + 10}px` };
-    },
-  }
-
-  // x-top x-left x-right x-bottom
-  offsetPositionSetters = {
-    top: ({ baseTop, top }) => {
-      return { top: `${baseTop + top}px` };
-    },
-    left: ({ baseLeft, left }) => {
-      return { left: `${baseLeft + left}px`, };
-    },
-    right: ({ baseLeft, right, portalWidth }) => {
-      return { left: `${baseLeft + right - portalWidth}px` };
-    },
-    bottom: ({ baseTop, bottom, portalHeight }) => {
-      return { top: `${baseTop + bottom - portalHeight}px` };
-    },
-  }
-
-  // x-center
-  centerPositionSetters = {
-    'top-center': (param) => {
-      const { baseLeft, left, width, portalWidth } = param;
-      return {
-        ...this.basePositionSetters.top(param),
-        left: `${baseLeft + left + (width / 2) - (portalWidth / 2)}px`,
-      };
-    },
-    'left-center': (param) => {
-      const { baseTop, top, height, portalHeight } = param;
-      return {
-        top: `${ baseTop + top + (height / 2) - (portalHeight / 2)}px`,
-        ...this.basePositionSetters.left(param),
-      };
-    },
-    'right-center': (param) => {
-      const { baseTop, top, height, portalHeight } = param;
-      return {
-        top: `${ baseTop + top + (height / 2) - (portalHeight / 2)}px`,
-        ...this.basePositionSetters.right(param),
-      };
-    },
-    'bottom-center': (param) => {
-      const { baseLeft, left, width, portalWidth } = param;
-      return {
-        ...this.basePositionSetters.bottom(param),
-        left: `${baseLeft + left + (width / 2) - (portalWidth / 2)}px`,
-      };
-    },
-  }
 
   onMouseEnter = () => {
     this.safeCall(this.props.onMouseEnter);
