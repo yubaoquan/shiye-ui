@@ -62,6 +62,9 @@
   -webkit-transform: translate3d(-50%, 50%, 0) rotate(45deg);
           transform: translate3d(-50%, 50%, 0) rotate(45deg);
 }
+.shiye-pop-portal.top-left .pop-arrow .centered {
+  left: 0;
+}
 .shiye-pop-portal.top-center .pop-arrow {
   left: 50%;
   bottom: 0;
@@ -74,11 +77,17 @@
   -webkit-transform: translate3d(50%, 50%, 0) rotate(45deg);
           transform: translate3d(50%, 50%, 0) rotate(45deg);
 }
+.shiye-pop-portal.top-right .pop-arrow .centered {
+  right: 0;
+}
 .shiye-pop-portal.left-top .pop-arrow {
   right: 0;
+  top: 20%;
+  -webkit-transform: translate3d(50%, -50%, 0) rotate(45deg);
+          transform: translate3d(50%, -50%, 0) rotate(45deg);
+}
+.shiye-pop-portal.left-top .pop-arrow.centered {
   top: 0;
-  -webkit-transform: translate3d(50%, 20%, 0) rotate(45deg);
-          transform: translate3d(50%, 20%, 0) rotate(45deg);
 }
 .shiye-pop-portal.left-center .pop-arrow {
   right: 0;
@@ -88,15 +97,21 @@
 }
 .shiye-pop-portal.left-bottom .pop-arrow {
   right: 0;
+  bottom: 20%;
+  -webkit-transform: translate3d(50%, 50%, 0) rotate(45deg);
+          transform: translate3d(50%, 50%, 0) rotate(45deg);
+}
+.shiye-pop-portal.left-bottom .pop-arrow.centered {
   bottom: 0;
-  -webkit-transform: translate3d(50%, -20%, 0) rotate(45deg);
-          transform: translate3d(50%, -20%, 0) rotate(45deg);
 }
 .shiye-pop-portal.right-top .pop-arrow {
   left: 0;
+  top: 20%;
+  -webkit-transform: translate3d(-50%, -50%, 0) rotate(45deg);
+          transform: translate3d(-50%, -50%, 0) rotate(45deg);
+}
+.shiye-pop-portal.right-top .pop-arrow .centered {
   top: 0;
-  -webkit-transform: translate3d(-50%, 20%, 0) rotate(45deg);
-          transform: translate3d(-50%, 20%, 0) rotate(45deg);
 }
 .shiye-pop-portal.right-center .pop-arrow {
   left: 0;
@@ -106,15 +121,21 @@
 }
 .shiye-pop-portal.right-bottom .pop-arrow {
   left: 0;
+  bottom: 20%;
+  -webkit-transform: translate3d(-50%, 50%, 0) rotate(45deg);
+          transform: translate3d(-50%, 50%, 0) rotate(45deg);
+}
+.shiye-pop-portal.right-bottom .pop-arrow .centered {
   bottom: 0;
-  -webkit-transform: translate3d(-50%, -20%, 0) rotate(45deg);
-          transform: translate3d(-50%, -20%, 0) rotate(45deg);
 }
 .shiye-pop-portal.bottom-left .pop-arrow {
   left: 20%;
   top: 0;
   -webkit-transform: translate3d(-50%, -50%, 0) rotate(45deg);
           transform: translate3d(-50%, -50%, 0) rotate(45deg);
+}
+.shiye-pop-portal.bottom-left .pop-arrow .centered {
+  left: 0;
 }
 .shiye-pop-portal.bottom-center .pop-arrow {
   left: 50%;
@@ -127,5 +148,8 @@
   top: 0;
   -webkit-transform: translate3d(-50%, -50%, 0) rotate(45deg);
           transform: translate3d(-50%, -50%, 0) rotate(45deg);
+}
+.shiye-pop-portal.bottom-right .pop-arrow .centered {
+  right: 0;
 }
 

@@ -32,6 +32,7 @@ class PopPortal extends Base {
     ]),
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
+    centerArrow: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -52,6 +53,7 @@ class PopPortal extends Base {
   }
 
   adjustPosition = () => {
+    const { centerArrow } = this.props;
     const triggerRect = this.props.triggerNode.getBoundingClientRect();
     const portalRect = this.portalRef.current.getBoundingClientRect();
 
@@ -71,7 +73,10 @@ class PopPortal extends Base {
       const [basePos, offsetPos] = this.props.position.split('-');
       const basePosStyle = basePositionSetters[basePos](posParams);
       const offsetPosStyle = offsetPositionSetters[offsetPos](posParams);
-      const arrowPosStyle = arrowPositionSetter(position);
+      let arrowPosStyle = {};
+      if (centerArrow) {
+        arrowPosStyle = arrowPositionSetter(position, posParams);
+      }
       this.setState({
         portalStyle: { ...basePosStyle, ...offsetPosStyle},
         arrowPosStyle,
@@ -88,14 +93,28 @@ class PopPortal extends Base {
   }
 
   render() {
-    const { wrapperClassName, position, content } = this.props;
-    const { portalStyle, basePosition, arrowPosStyle } = this.state;
+    const {
+      wrapperClassName,
+      position,
+      content,
+      centerArrow,
+    } = this.props;
+    const {
+      portalStyle,
+      basePosition,
+      arrowPosStyle,
+    } = this.state;
     const cn = classNames(
       this.prefixClass('-pop-portal'),
       wrapperClassName,
       position,
       basePosition,
     );
+
+    const arrowCn = classNames('pop-arrow', {
+      centered: centerArrow,
+    });
+
     return ReactDOM.createPortal(
       (<div
         className={cn}
@@ -107,7 +126,7 @@ class PopPortal extends Base {
         <div className={this.prefixClass('-pop-portal-content-wrapper')}>
           {content}
         </div>
-        <span className="pop-arrow" style={arrowPosStyle} />
+        <span className={arrowCn} style={arrowPosStyle} />
       </div>),
       document.body,
     )

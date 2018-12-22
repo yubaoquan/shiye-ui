@@ -78,6 +78,9 @@
       left: 20%;
       bottom: 0;
       transform: translate3d(-50%, 50%, 0) rotate(45deg);
+      .centered {
+        left: 0;
+      }
     }
   }
   &.top-center {
@@ -92,14 +95,20 @@
       right: 20%;
       bottom: 0;
       transform: translate3d(50%, 50%, 0) rotate(45deg);
+      .centered {
+        right: 0;
+      }
     }
   }
 
   &.left-top {
     .pop-arrow {
       right: 0;
-      top: 0;
-      transform: translate3d(50%, 20%, 0) rotate(45deg);
+      top: 20%;
+      transform: translate3d(50%, -50%, 0) rotate(45deg);
+      &.centered {
+        top: 0;
+      }
     }
   }
 
@@ -113,16 +122,22 @@
   &.left-bottom {
     .pop-arrow {
       right: 0;
-      bottom: 0;
-      transform: translate3d(50%, -20%, 0) rotate(45deg);
+      bottom: 20%;
+      transform: translate3d(50%, 50%, 0) rotate(45deg);
+      &.centered {
+        bottom: 0;
+      }
     }
   }
 
   &.right-top {
     .pop-arrow {
       left: 0;
-      top: 0;
-      transform: translate3d(-50%, 20%, 0) rotate(45deg);
+      top: 20%;
+      transform: translate3d(-50%, -50%, 0) rotate(45deg);
+      .centered {
+        top: 0;
+      }
     }
   }
   &.right-center {
@@ -135,8 +150,11 @@
   &.right-bottom {
     .pop-arrow {
       left: 0;
-      bottom: 0;
-      transform: translate3d(-50%, -20%, 0) rotate(45deg);
+      bottom: 20%;
+      transform: translate3d(-50%, 50%, 0) rotate(45deg);
+      .centered {
+        bottom: 0;
+      }
     }
   }
 
@@ -145,6 +163,9 @@
       left: 20%;
       top: 0;
       transform: translate3d(-50%, -50%, 0) rotate(45deg);
+      .centered {
+        left: 0;
+      }
     }
   }
   &.bottom-center {
@@ -159,6 +180,9 @@
       right: 20%;
       top: 0;
       transform: translate3d(-50%, -50%, 0) rotate(45deg);
+      .centered {
+        right: 0;
+      }
     }
   }
 }

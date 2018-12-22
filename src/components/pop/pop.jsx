@@ -97,7 +97,15 @@ class Pop extends Base {
   }
 
   render() {
-    const { trigger, className, children, position, content } = this.props;
+    const {
+      trigger,
+      className,
+      children,
+      position,
+      content,
+      centerArrow,
+    } = this.props;
+
     const { show, mouseOnPortal } = this.state;
     const popProps = {};
     if (trigger === 'hover') {
@@ -130,6 +138,7 @@ class Pop extends Base {
           <PopPortal
             content={content}
             position={position}
+            centerArrow={centerArrow}
             triggerNode={this.triggerRef.current}
             onMouseEnter={this.onMouseEnterPortal}
             onMouseLeave={this.onMouseLeavePortal}
