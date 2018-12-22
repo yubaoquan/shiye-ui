@@ -95,13 +95,50 @@
     }
   }
 
-  &.left-top {}
-  &.left-center {}
-  &.left-bottom {}
+  &.left-top {
+    .pop-arrow {
+      right: 0;
+      top: 0;
+      transform: translate3d(50%, 20%, 0) rotate(45deg);
+    }
+  }
 
-  &.right-top {}
-  &.right-center {}
-  &.right-bottom {}
+  &.left-center {
+    .pop-arrow {
+      right: 0;
+      top: 50%;
+      transform: translate3d(50%, -50%, 0) rotate(45deg);
+    }
+  }
+  &.left-bottom {
+    .pop-arrow {
+      right: 0;
+      bottom: 0;
+      transform: translate3d(50%, -20%, 0) rotate(45deg);
+    }
+  }
+
+  &.right-top {
+    .pop-arrow {
+      left: 0;
+      top: 0;
+      transform: translate3d(-50%, 20%, 0) rotate(45deg);
+    }
+  }
+  &.right-center {
+    .pop-arrow {
+      left: 0;
+      top: 50%;
+      transform: translate3d(-50%, -50%, 0) rotate(45deg);
+    }
+  }
+  &.right-bottom {
+    .pop-arrow {
+      left: 0;
+      bottom: 0;
+      transform: translate3d(-50%, -20%, 0) rotate(45deg);
+    }
+  }
 
   &.bottom-left {
     .pop-arrow {

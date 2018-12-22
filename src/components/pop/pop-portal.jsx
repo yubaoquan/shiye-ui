@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Base from '../base';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
+import { pick } from 'lodash/object';
 
 class PopPortal extends Base {
 
@@ -37,7 +38,6 @@ class PopPortal extends Base {
     super(props);
     this.state = {
       portalStyle: {},
-      basePosition: props.position.split('-')[0],
     }
     this.portalRef = React.createRef();
   }
@@ -51,52 +51,84 @@ class PopPortal extends Base {
     const portalRect = this.portalRef.current.getBoundingClientRect();
 
     const { scrollTop: baseTop, scrollLeft: baseLeft } = document.documentElement;
-    const positionLeftPart = this.state.basePosition;
-    const portalStyle = this.positionSetter[positionLeftPart]({
+    const { position } = this.props;
+    const posParams = {
       baseTop,
       baseLeft,
-    }, triggerRect, portalRect);
-    this.setState({ portalStyle });
+      ...pick(triggerRect, ['top', 'bottom', 'left', 'right', 'height', 'width']),
+      portalWidth: portalRect.width,
+      portalHeight: portalRect.height,
+    };
+    if (position.includes('center')) {
+      const portalStyle = this.centerPositionSetters[position](posParams);
+      this.setState({ portalStyle });
+    } else {
+      const [basePos, offsetPos] = this.props.position.split('-');
+      const basePosStyle = this.basePositionSetters[basePos](posParams);
+      const offsetPosStyle = this.offsetPositionSetters[offsetPos](posParams);
+      this.setState({ portalStyle: { ...basePosStyle, ...offsetPosStyle} });
+    }
   };
 
-  positionSetter = {
-    top: (
-      { baseTop, baseLeft },
-      { left, top, width },
-      { height: portalHeight, width: portalWidth },
-    ) => {
+  // top-x left-x bottom-x right-x
+  basePositionSetters = {
+    top: ({ baseTop, top, portalHeight }) => {
+      return { top: `${baseTop + top - portalHeight - 10}px` };
+    },
+    left: ({ baseLeft, left, portalWidth }) => {
+      return { left: `${baseLeft + left - portalWidth - 10}px` };
+    },
+    right: ({ baseLeft, right }) => {
+      return { left: `${baseLeft + right + 10}px` };
+    },
+    bottom: ({ baseTop, bottom }) => {
+      return { top: `${baseTop + bottom + 10}px` };
+    },
+  }
+
+  // x-top x-left x-right x-bottom
+  offsetPositionSetters = {
+    top: ({ baseTop, top }) => {
+      return { top: `${baseTop + top}px` };
+    },
+    left: ({ baseLeft, left }) => {
+      return { left: `${baseLeft + left}px`, };
+    },
+    right: ({ baseLeft, right, portalWidth }) => {
+      return { left: `${baseLeft + right - portalWidth}px` };
+    },
+    bottom: ({ baseTop, bottom, portalHeight }) => {
+      return { top: `${baseTop + bottom - portalHeight}px` };
+    },
+  }
+
+  // x-center
+  centerPositionSetters = {
+    'top-center': (param) => {
+      const { baseLeft, left, width, portalWidth } = param;
       return {
-        top: `${baseTop + top - portalHeight - 10}px`,
+        ...this.basePositionSetters.top(param),
         left: `${baseLeft + left + (width / 2) - (portalWidth / 2)}px`,
       };
     },
-    left: (
-      { baseTop, baseLeft },
-      { left, top, height },
-      { height: portalHeight, width: portalWidth },
-    ) => {
+    'left-center': (param) => {
+      const { baseTop, top, height, portalHeight } = param;
       return {
         top: `${ baseTop + top + (height / 2) - (portalHeight / 2)}px`,
-        left: `${baseLeft + left - portalWidth - 10}px`,
+        ...this.basePositionSetters.left(param),
       };
     },
-    right: (
-      { baseTop, baseLeft },
-      { top, right, height },
-      { height: portalHeight },
-    ) => {
+    'right-center': (param) => {
+      const { baseTop, top, height, portalHeight } = param;
       return {
         top: `${ baseTop + top + (height / 2) - (portalHeight / 2)}px`,
-        left: `${baseLeft + right + 10}px`,
+        ...this.basePositionSetters.right(param),
       };
     },
-    bottom: (
-      { baseTop, baseLeft },
-      { left, bottom, width },
-      { width: portalWidth },
-    ) => {
+    'bottom-center': (param) => {
+      const { baseLeft, left, width, portalWidth } = param;
       return {
-        top: `${baseTop + bottom + 10}px`,
+        ...this.basePositionSetters.bottom(param),
         left: `${baseLeft + left + (width / 2) - (portalWidth / 2)}px`,
       };
     },

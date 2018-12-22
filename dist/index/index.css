@@ -604,6 +604,42 @@
   -webkit-transform: translate3d(50%, 50%, 0) rotate(45deg);
           transform: translate3d(50%, 50%, 0) rotate(45deg);
 }
+.shiye-pop-portal.left-top .pop-arrow {
+  right: 0;
+  top: 0;
+  -webkit-transform: translate3d(50%, 20%, 0) rotate(45deg);
+          transform: translate3d(50%, 20%, 0) rotate(45deg);
+}
+.shiye-pop-portal.left-center .pop-arrow {
+  right: 0;
+  top: 50%;
+  -webkit-transform: translate3d(50%, -50%, 0) rotate(45deg);
+          transform: translate3d(50%, -50%, 0) rotate(45deg);
+}
+.shiye-pop-portal.left-bottom .pop-arrow {
+  right: 0;
+  bottom: 0;
+  -webkit-transform: translate3d(50%, -20%, 0) rotate(45deg);
+          transform: translate3d(50%, -20%, 0) rotate(45deg);
+}
+.shiye-pop-portal.right-top .pop-arrow {
+  left: 0;
+  top: 0;
+  -webkit-transform: translate3d(-50%, 20%, 0) rotate(45deg);
+          transform: translate3d(-50%, 20%, 0) rotate(45deg);
+}
+.shiye-pop-portal.right-center .pop-arrow {
+  left: 0;
+  top: 50%;
+  -webkit-transform: translate3d(-50%, -50%, 0) rotate(45deg);
+          transform: translate3d(-50%, -50%, 0) rotate(45deg);
+}
+.shiye-pop-portal.right-bottom .pop-arrow {
+  left: 0;
+  bottom: 0;
+  -webkit-transform: translate3d(-50%, -20%, 0) rotate(45deg);
+          transform: translate3d(-50%, -20%, 0) rotate(45deg);
+}
 .shiye-pop-portal.bottom-left .pop-arrow {
   left: 20%;
   top: 0;
