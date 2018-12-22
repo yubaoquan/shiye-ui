@@ -7,6 +7,7 @@ import { pick } from 'lodash/object';
 import basePositionSetters from './position-setters/base';
 import centerPositionSetters from './position-setters/center';
 import offsetPositionSetters from './position-setters/offset';
+import arrowPositionSetter from './position-setters/arrow';
 
 class PopPortal extends Base {
 
@@ -41,6 +42,7 @@ class PopPortal extends Base {
     super(props);
     this.state = {
       portalStyle: {},
+      arrowPosStyle: {},
     }
     this.portalRef = React.createRef();
   }
@@ -69,7 +71,11 @@ class PopPortal extends Base {
       const [basePos, offsetPos] = this.props.position.split('-');
       const basePosStyle = basePositionSetters[basePos](posParams);
       const offsetPosStyle = offsetPositionSetters[offsetPos](posParams);
-      this.setState({ portalStyle: { ...basePosStyle, ...offsetPosStyle} });
+      const arrowPosStyle = arrowPositionSetter(position);
+      this.setState({
+        portalStyle: { ...basePosStyle, ...offsetPosStyle},
+        arrowPosStyle,
+      });
     }
   };
 
@@ -83,7 +89,7 @@ class PopPortal extends Base {
 
   render() {
     const { wrapperClassName, position, content } = this.props;
-    const { portalStyle, basePosition } = this.state;
+    const { portalStyle, basePosition, arrowPosStyle } = this.state;
     const cn = classNames(
       this.prefixClass('-pop-portal'),
       wrapperClassName,
@@ -101,7 +107,7 @@ class PopPortal extends Base {
         <div className={this.prefixClass('-pop-portal-content-wrapper')}>
           {content}
         </div>
-        <span className="pop-arrow" />
+        <span className="pop-arrow" style={arrowPosStyle} />
       </div>),
       document.body,
     )
