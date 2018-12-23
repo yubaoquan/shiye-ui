@@ -57,7 +57,7 @@ class PopPortal extends Base {
     const triggerRect = this.props.triggerNode.getBoundingClientRect();
     const portalRect = this.portalRef.current.getBoundingClientRect();
 
-    const { scrollTop: baseTop, scrollLeft: baseLeft } = document.documentElement;
+    const { pageYOffset: baseTop, pageXOffset: baseLeft } = window;
     const { position } = this.props;
     const posParams = {
       baseTop,

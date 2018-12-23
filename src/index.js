@@ -4,6 +4,8 @@ import Icon from './components/icon';
 import Layout from './components/layout';
 import Pop from './components/pop';
 import Form from './components/form';
+import Notify from './components/notify';
+import SweetAlert from './components/sweet-alert';
 
 export {
   Input,
@@ -12,4 +14,6 @@ export {
   Layout,
   Pop,
   Form,
+  Notify,
+  SweetAlert,
 };
