@@ -1,0 +1,78 @@
+.shiye-notify {
+
+  &-container {
+    position: fixed;
+    top: 20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+
+  &-toast {
+    padding: 0 25px;
+    line-height: 40px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 14px;
+    // color: $theme-stroke-10;
+    text-align: center;
+    border-radius: 2px;
+    box-sizing: border-box;
+
+    margin: 0 auto 10px;
+    // display: inline-block;
+    width: 300px;
+    color: #fff;
+    animation-name: slide;
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+    animation-duration: 200ms;
+
+    &-out {
+      animation-name: slide-out;
+    }
+
+    &-success {
+      background-color: rgba(68, 187, 136, 0.8);
+    }
+    &-error {
+      background-color: rgba(255, 68, 68, 0.8);
+    }
+  }
+}
+
+@keyframes slide {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  1% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+@keyframes slide-out {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 100%, 0);
+    margin-bottom: 10px;
+  }
+
+  99% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+    margin-bottom: -40px;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+    margin-bottom: -40px;
+  }
+}
