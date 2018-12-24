@@ -23,14 +23,21 @@ class Toast extends Base {
   state = { goOut: false }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({ goOut: true });
-    }, this.props.duration);
+    this.timeout = setTimeout(this.markGoOut, this.props.duration);
   }
+
   onAnimationEnd = () => {
     if (this.state.goOut) {
       this.safeCall(this.props.onAnimationEnd, [this.props.id]);
     }
+  }
+
+  markGoOut = () => {
+    this.setState({ goOut: true });
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
   }
 
   render() {

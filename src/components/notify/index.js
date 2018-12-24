@@ -1,2 +1,2 @@
-import Notify from './notify';
-export default Notify;
+import { helper } from './helper';
+export default helper;
