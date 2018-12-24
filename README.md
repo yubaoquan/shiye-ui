@@ -18,10 +18,10 @@
 - done Layout
 - done postcss (暂时加个 autoprefixer 功能)
 - done Input
+- done Notify
 - building... Form 及其依赖的组件
   - Form.InputField
   - building... Pop
-  - building... Notify
   - building... SweetAlert
 
 ### 效果/进度截图

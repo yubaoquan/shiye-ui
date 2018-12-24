@@ -36,7 +36,6 @@ function createToast(
     type,
     duration,
     cb,
-    index: toasts.length,
   };
 
   const instance = <Notify toast={toast} />;
@@ -61,13 +60,14 @@ function clear() {
   toasts = [];
 }
 
-function removeById(id) {
+function removeById(id, cb) {
   const item = toasts.find(item => item.id === id);
   if (!item) {
     return;
   }
   unmount(item);
   toasts = toasts.filter(item => item.id !== id);
+  cb();
 }
 
 function unmount(item) {

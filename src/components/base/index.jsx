@@ -26,6 +26,12 @@ class Base extends Component {
       fn.apply(null, args);
     }
   }
+
+  static safeCall(fn, args = []) {
+    if (typeof fn === 'function') {
+      fn.apply(null, args);
+    }
+  }
 }
 
 export default Base;
