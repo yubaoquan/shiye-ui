@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Base from '../base';
 import Toast from './toast';
 import PropTypes from 'prop-types';
-import { removeById, root } from './helper';
+import { removeById, getRoot } from './helper2';
 import './style';
 
 class Notify extends Base {
@@ -26,7 +26,7 @@ class Notify extends Base {
   render() {
     return ReactDOM.createPortal(
       <Toast {...this.props.toast} onAnimationEnd={this.onAnimationEnd} />,
-      root
+      getRoot()
     );
   }
 }

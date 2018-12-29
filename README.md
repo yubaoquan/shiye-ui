@@ -10,7 +10,7 @@
 
 为什么早没想到做一个组件库呢!!!
 
-现在做也不晚. 视觉和交互照抄 [**zent**](https://youzan.github.io/zent/)
+现在做也不晚. 视觉和交互大致抄 [**zent**](https://youzan.github.io/zent/), 细节稍加调整
 
 ### 进度
 - done Button组件;
