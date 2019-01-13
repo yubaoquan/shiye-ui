@@ -1,3 +1,7 @@
+/**
+ * sweet-alert notify 组件继承了这个组件
+ * 组件需要自己实现createComponentInstance 方法
+ */
 import React from 'react';
 import ReactDOM from 'react-dom';
 

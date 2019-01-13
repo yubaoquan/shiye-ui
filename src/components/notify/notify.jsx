@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Base from '../base';
 import Toast from './toast';
 import PropTypes from 'prop-types';
-import { removeById, getRoot } from './helper2';
+import { removeById, getRoot } from './container';
 import './style';
 
 class Notify extends Base {
