@@ -4,6 +4,11 @@ import { removeById, getRoot } from './container';
 import PropTypes from 'prop-types';
 
 class SweetAlert extends Component {
+  static propTypes = {
+    onRemove: PropTypes.func,
+    position: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number }),
+  }
+
   constructor(props) {
     super(props);
     const docEl = document.documentElement;
@@ -11,15 +16,20 @@ class SweetAlert extends Component {
       x: docEl.clientWidth / 2,
       y: docEl.clientHeight / 2,
     };
-    console.info('this position is ', props.position);
     const { x: sx, y: sy } = this.props.position;
     const { x: mx, y: my } = this.screenMiddle;
 
-    console.info(sx, mx);
+    const offsetX = sx - mx;
+    const offsetY = sy - my;
     this.state = {
+      ready2Remove: false,
+      outOffset: {
+        x: offsetX,
+        y: offsetY,
+      },
       offset: {
-        x: `${sx - mx}`,
-        y: `${sy - my}`,
+        x: offsetX,
+        y: offsetY,
       },
       scale: {
         x: 0,
@@ -34,6 +44,30 @@ class SweetAlert extends Component {
       });
     }, 0);
   }
+
+  onTransitionEnd = () => {
+    if (this.state.ready2Remove) {
+      this.props.onRemove(this.props.id);
+    } else {
+      this.setState({ ready2Remove: true });
+    }
+  }
+
+  /**
+   * 提供给container调用
+   */
+  remove() {
+    this.prepareRemove();
+  }
+
+  prepareRemove() {
+    const { x, y } = this.state.outOffset;
+    this.setState({
+      offset: { x, y },
+      scale: { x: 0, y: 0 },
+    });
+  }
+
   render() {
     const {
       offset: { x, y },
@@ -42,10 +76,13 @@ class SweetAlert extends Component {
     const style = {
       transform: `translate3d(${x}px, ${y}px, 0) scale3d(${sx}, ${sy}, 1)`,
     };
-    console.info(style);
 
     return ReactDOM.createPortal(
-      (<div className="shiye-sweetalert" style={style}>this is modal</div>),
+      (<div
+        className="shiye-sweetalert"
+        style={style}
+        onTransitionEnd={this.onTransitionEnd}
+      >this is modal</div>),
       getRoot()
     );
   }

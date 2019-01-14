@@ -10,6 +10,7 @@ class Popable {
   root = null;
   instanceList = [];
   className = '';
+  instanceCount = 0;
 
   createRootMountPoint() {
     this.root = document.createElement('span');
@@ -30,11 +31,12 @@ class Popable {
 
   createAndMount(options) {
     const mountPoint = this.createMountPoint();
-    const id = Math.random();
+    const id = this.instanceCount++;
 
     const instance = this.createComponentInstance({ id, ...options });
     this.instanceList.push({ id, mountPoint, instance, options });
     ReactDOM.render((<>{instance}</>), mountPoint);
+    return id;
   }
 }
 

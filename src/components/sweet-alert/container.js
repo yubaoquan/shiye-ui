@@ -6,6 +6,8 @@ import Base from '../base';
 import './style';
 
 class Container extends Popable {
+  static visibleClassName = 'shiye-sweetalert-container';
+  static hiddenClassName = 'shiye-sweetalert-container--hidden';
   className = 'shiye-sweetalert-container';
 
   constructor(props) {
@@ -17,7 +19,6 @@ class Container extends Popable {
     const { clientX, clientY } = e;
     Container.x = clientX;
     Container.y = clientY;
-
   }
 
   createRootMountPoint() {
@@ -28,15 +29,17 @@ class Container extends Popable {
 
   // close the alert
   onClick = (e) => {
-    console.info('click happen');
+    const id = this.instanceCount - 1;
+    this.removeById(id);
   }
 
   alert = (options) => {
-    this.createAndMount(options, 'alert');
+    const id = this.createAndMount(options, 'alert');
+    return this.removeById.bind(this, id);
   }
 
   confirm = (options) => {
-    this.createAndMount(options, 'confirm');
+    return this.createAndMount(options, 'confirm');
   }
 
   createComponentInstance(options, mode) {
@@ -44,8 +47,26 @@ class Container extends Popable {
       x: Container.x,
       y: Container.y,
     };
-    const props = { ...options, mode, position };
-    return <Alert {...props} />;
+    const props = {
+      ...options,
+      mode,
+      position,
+      onRemove: this.unmountById,
+    };
+    const ref = React.createRef();
+    const instance = <Alert {...props} ref={ref} />;
+    return { instance, ref };
+  }
+
+  createAndMount(options) {
+    const mountPoint = this.createMountPoint();
+    this.root.className = Container.visibleClassName;
+    const id = this.instanceCount++;
+
+    const { instance, ref } = this.createComponentInstance({ id, ...options });
+    this.instanceList.push({ id, mountPoint, instance, options, ref });
+    ReactDOM.render((<>{instance}</>), mountPoint);
+    return id;
   }
 
   config = (_cfg) => {
@@ -62,16 +83,24 @@ class Container extends Popable {
 
   removeById = (id, cb) => {
     const item = this.instanceList.find(item => item.id === id);
+
+    if (!item) {
+      return;
+    }
+    item.ref.current.remove();
+  }
+
+  unmountById = (id) => {
+    const item = this.instanceList.find(item => item.id === id);
     if (!item) {
       return;
     }
     this.unmount(item);
-    this.instanceList = this.instanceList.filter(item => item.id !== id);
-
     Base.safeCall(item.options.cb);
   }
 
   unmount = (item) => {
+    this.root.className += Container.hiddenClassName;
     ReactDOM.unmountComponentAtNode(item.mountPoint);
     this.root.removeChild(item.mountPoint);
   }
