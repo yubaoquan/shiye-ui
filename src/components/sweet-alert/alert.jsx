@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { removeById, getRoot } from './container';
+import Button from '../button';
+
 import PropTypes from 'prop-types';
 
 class SweetAlert extends Component {
   static propTypes = {
     onRemove: PropTypes.func,
     position: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number }),
+    title: PropTypes.string,
+    confirmTitle: PropTypes.string,
+  }
+
+  static defaultProps = {
+    title: '提示',
+    confirmTitle: '我知道了',
+    onRemove() {},
   }
 
   constructor(props) {
@@ -18,6 +28,7 @@ class SweetAlert extends Component {
     };
     const { x: sx, y: sy } = this.props.position;
     const { x: mx, y: my } = this.screenMiddle;
+    this.ref = React.createRef();
 
     const offsetX = sx - mx;
     const offsetY = sy - my;
@@ -45,12 +56,20 @@ class SweetAlert extends Component {
     }, 0);
   }
 
-  onTransitionEnd = () => {
+  // 防止容器内其他元素的 transitionEnd 触发这里的逻辑
+  onTransitionEnd = (e) => {
+    if (e.target !== this.ref.current) {
+      return;
+    }
     if (this.state.ready2Remove) {
       this.props.onRemove(this.props.id);
     } else {
       this.setState({ ready2Remove: true });
     }
+  }
+
+  onConfirmBtnClick = () => {
+    this.remove()
   }
 
   /**
@@ -76,13 +95,23 @@ class SweetAlert extends Component {
     const style = {
       transform: `translate3d(${x}px, ${y}px, 0) scale3d(${sx}, ${sy}, 1)`,
     };
+    const { title, confirmTitle } = this.props;
 
     return ReactDOM.createPortal(
       (<div
         className="shiye-sweetalert"
         style={style}
         onTransitionEnd={this.onTransitionEnd}
-      >this is modal</div>),
+        ref={this.ref}
+      >
+        <div className="shiye-sweetalert__header">{title}</div>
+        <div className="shiye-sweetalert__body">
+          this is modal
+        </div>
+        <div className="shiye-sweetalert__footer">
+          <Button type="primary" onClick={this.onConfirmBtnClick}>{confirmTitle}</Button>
+        </div>
+      </div>),
       getRoot()
     );
   }

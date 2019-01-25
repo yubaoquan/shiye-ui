@@ -7,6 +7,7 @@ import './style';
 
 class Container extends Popable {
   static visibleClassName = 'shiye-sweetalert-container';
+  static disappearClassName = 'shiye-sweetalert-container--disappear';
   static hiddenClassName = 'shiye-sweetalert-container--hidden';
   className = 'shiye-sweetalert-container';
 
@@ -100,7 +101,10 @@ class Container extends Popable {
   }
 
   unmount = (item) => {
-    this.root.className += Container.hiddenClassName;
+    this.root.className = Container.disappearClassName;
+    setTimeout(() => {
+      this.root.className = Container.hiddenClassName;
+    }, 500);
     ReactDOM.unmountComponentAtNode(item.mountPoint);
     this.root.removeChild(item.mountPoint);
   }
