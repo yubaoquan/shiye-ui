@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Popable from '../base/popable';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -9,11 +10,15 @@ class Container extends Popable {
   static visibleClassName = 'shiye-sweetalert-container';
   static disappearClassName = 'shiye-sweetalert-container--disappear';
   static hiddenClassName = 'shiye-sweetalert-container--hidden';
+  static propTypes = {
+    closeableMask: PropTypes.bool,
+  };
+
   className = 'shiye-sweetalert-container';
 
   constructor(props) {
     super(props);
-    document.addEventListener('click', Container.recordMousePosition)
+    document.addEventListener('click', Container.recordMousePosition);
   }
 
   static recordMousePosition(e) {
@@ -60,7 +65,7 @@ class Container extends Popable {
   }
 
   createAndMount(options) {
-    const mountPoint = this.createMountPoint();
+    const mountPoint = this.createMountPoint({ className: 'shiye-sweetalert-mount-point' });
     this.root.className = Container.visibleClassName;
     const id = this.instanceCount++;
 
@@ -85,25 +90,38 @@ class Container extends Popable {
   removeById = (id, cb) => {
     const item = this.instanceList.find(item => item.id === id);
 
-    if (!item) {
+    if (!item || !item.options.closeableMask) {
       return;
     }
     item.ref.current.remove();
   }
 
   unmountById = (id) => {
-    const item = this.instanceList.find(item => item.id === id);
-    if (!item) {
+    let itemIndex;
+    this.instanceList.forEach((item, index) => {
+      if (item.id === id) {
+        itemIndex = index;
+      }
+    });
+    if (itemIndex === -1) {
       return;
     }
+    const item = this.instanceList.splice(itemIndex, 1)[0];
+    console.info(`unmount ${id}`);
+
+    console.info(this.instanceList.length);
     this.unmount(item);
     Base.safeCall(item.options.cb);
   }
 
   unmount = (item) => {
-    this.root.className = Container.disappearClassName;
+    if (this.instanceList.length === 0) {
+      this.root.className = Container.disappearClassName;
+    }
     setTimeout(() => {
-      this.root.className = Container.hiddenClassName;
+      if (this.instanceList.length === 0) {
+        this.root.className = Container.hiddenClassName;
+      }
     }, 500);
     ReactDOM.unmountComponentAtNode(item.mountPoint);
     this.root.removeChild(item.mountPoint);

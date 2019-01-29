@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://@ybq/ui/./src/components/form/style.less"],"names":[],"mappings":"AAAA;AACA;AACA","file":"form/index.css","sourcesContent":[".shiye-form {\n  background-color: #bbb;\n}\n"],"sourceRoot":""}

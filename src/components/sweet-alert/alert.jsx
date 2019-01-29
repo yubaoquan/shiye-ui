@@ -11,12 +11,14 @@ class SweetAlert extends Component {
     position: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number }),
     title: PropTypes.string,
     confirmTitle: PropTypes.string,
+    content: PropTypes.node,
   }
 
   static defaultProps = {
     title: '提示',
     confirmTitle: '我知道了',
     onRemove() {},
+    content: '',
   }
 
   constructor(props) {
@@ -61,6 +63,9 @@ class SweetAlert extends Component {
     if (e.target !== this.ref.current) {
       return;
     }
+
+    // 第一次transitionEnd是进入的动画执行完
+    // 第二次transitionEnd的退出的动画执行完
     if (this.state.ready2Remove) {
       this.props.onRemove(this.props.id);
     } else {
@@ -95,10 +100,10 @@ class SweetAlert extends Component {
     const style = {
       transform: `translate3d(${x}px, ${y}px, 0) scale3d(${sx}, ${sy}, 1)`,
     };
-    const { title, confirmTitle } = this.props;
+    const { title, confirmTitle, content } = this.props;
 
-    return ReactDOM.createPortal(
-      (<div
+    return (
+      <div
         className="shiye-sweetalert"
         style={style}
         onTransitionEnd={this.onTransitionEnd}
@@ -106,13 +111,12 @@ class SweetAlert extends Component {
       >
         <div className="shiye-sweetalert__header">{title}</div>
         <div className="shiye-sweetalert__body">
-          this is modal
+          {content}
         </div>
         <div className="shiye-sweetalert__footer">
           <Button type="primary" onClick={this.onConfirmBtnClick}>{confirmTitle}</Button>
         </div>
-      </div>),
-      getRoot()
+      </div>
     );
   }
 }

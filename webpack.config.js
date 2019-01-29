@@ -5,7 +5,8 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const fs = require('fs');
 
 const config = {
-  mode: 'production',
+  mode: 'development',
+  devtool: 'source-map',
   entry: {},
   resolve: {
     extensions: [ '.js', '.jsx', '.css', '.less' ],

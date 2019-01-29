@@ -19,8 +19,11 @@ class Popable {
     return this.root;
   }
 
-  createMountPoint() {
+  createMountPoint(options) {
     const el = document.createElement('span');
+    if (options.className) {
+      el.className = options.className;
+    }
     this.getRoot().appendChild(el);
     return el;
   }

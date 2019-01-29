@@ -245,9 +245,8 @@
   }
 }
 
+/* appear/disapear: 遮罩的透明度变化动效 */
 .shiye-sweetalert-container {
-  display: -webkit-box;
-  display: flex;
   -webkit-animation-name: appear;
           animation-name: appear;
   position: fixed;
@@ -289,6 +288,19 @@
 }
 .shiye-sweetalert-container--hidden {
   display: none;
+}
+.shiye-sweetalert-mount-point {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  -webkit-box-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: flex;
 }
 .shiye-sweetalert {
   display: inline-block;
@@ -347,3 +359,5 @@
   }
 }
 
+
+/*# sourceMappingURL=index.css.map*/

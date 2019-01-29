@@ -6,6 +6,8 @@ import Base from '../base';
 import './style';
 
 class Button extends Base {
+
+  static validHtmlTypes = ['button', 'submit', 'reset']
   static propTypes = {
     outline: PropTypes.bool,
     loading: PropTypes.bool,
@@ -17,12 +19,10 @@ class Button extends Base {
     href: PropTypes.string,
     target: PropTypes.oneOf(['_blank', '']),
     icon: PropTypes.string,
-    htmlType: PropTypes.oneOf(Component.validHtmlTypes),
+    htmlType: PropTypes.oneOf(Button.validHtmlTypes),
     onClick: PropTypes.func,
     style: PropTypes.object,
   }
-
-  static validHtmlTypes = ['button', 'submit', 'reset']
 
   static defaultProps = {
     type: 'default',
