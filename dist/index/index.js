@@ -14714,6 +14714,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var types = ['share-alt', 'chevron-left', 'chevron-right', 'check', 'wrong', 'search', 'download', 'sqauare', 'sqauare-o', 'stop', 'check-circle', 'check-circle-o', 'check-square', 'check-square-o', 'info', 'info-circle', 'alert', 'alert-circle', 'alert-circle-o', 'alert-triangle', 'cancel', 'cancel-circle', 'cancel-circle-o'];
 
 var Icon =
 /*#__PURE__*/
@@ -14732,7 +14733,8 @@ function (_Component) {
       var _this$props = this.props,
           type = _this$props.type,
           cn = _this$props.className;
-      var typeClass = Icon.iconClassMap[type] || Icon.iconClassMap.square;
+      var realType = types.includes(type) ? type : 'square-o';
+      var typeClass = 'icon-' + realType || false;
       var className = classnames__WEBPACK_IMPORTED_MODULE_8___default()('shiye-icon', cn, typeClass);
       return react__WEBPACK_IMPORTED_MODULE_6___default.a.createElement("span", {
         className: className
@@ -14744,22 +14746,11 @@ function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_6__["Component"]);
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_5___default()(Icon, "propTypes", {
-  type: prop_types__WEBPACK_IMPORTED_MODULE_7___default.a.oneOf(['share', 'previous', 'next', 'check', 'wrong', 'search', 'download', 'sqauare'])
+  type: prop_types__WEBPACK_IMPORTED_MODULE_7___default.a.oneOf(types)
 });
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_5___default()(Icon, "defaultProps", {
-  type: 'square'
-});
-
-_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_5___default()(Icon, "iconClassMap", {
-  share: 'icon-share-alt',
-  previous: 'icon-chevron-left',
-  next: 'icon-chevron-right',
-  check: 'icon-check',
-  wrong: 'icon-wrong',
-  search: 'icon-search',
-  download: 'icon-download',
-  square: 'icon-square-o'
+  type: 'square-o'
 });
 
 /* harmony default export */ __webpack_exports__["default"] = (Icon);
@@ -14776,6 +14767,9 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_5___default()(Ico
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _icon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./icon */ "./src/components/icon/icon.jsx");
+/**
+ * http://app.fontastic.me/#customize/GdSq7bSuALPhU65Dsxak75
+ */
 
 /* harmony default export */ __webpack_exports__["default"] = (_icon__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
@@ -16420,6 +16414,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _base__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../base */ "./src/components/base/index.jsx");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _icon__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../icon */ "./src/components/icon/index.js");
 
 
 
@@ -16431,6 +16426,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+var types = ['info', 'success', 'warning', 'error'];
 
 var SweetAlert =
 /*#__PURE__*/
@@ -16475,6 +16472,10 @@ function (_Component) {
       _base__WEBPACK_IMPORTED_MODULE_9__["default"].safeCall(_this.props.onCancel);
 
       _this.remove();
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5___default()(_this)), "isValidType", function (type) {
+      return types.includes(type);
     });
 
     var docEl = document.documentElement;
@@ -16562,32 +16563,37 @@ function (_Component) {
         transform: "translate3d(".concat(x, "px, ").concat(y, "px, 0) scale3d(").concat(sx, ", ").concat(sy, ", 1)")
       };
       var _this$props = this.props,
+          type = _this$props.type,
           title = _this$props.title,
           confirmTitle = _this$props.confirmTitle,
           cancelTitle = _this$props.cancelTitle,
           content = _this$props.content,
           onConfirm = _this$props.onConfirm,
           onCancel = _this$props.onCancel;
-      var footer = [];
+      var header = title;
 
-      if (onConfirm) {
-        footer.push(react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_button__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      if (type && this.isValidType(type)) {
+        header = react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_7___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_icon__WEBPACK_IMPORTED_MODULE_11__["default"], {
+          type: SweetAlert.typeMap[type],
+          className: type
+        }), title);
+      }
+
+      var footer = react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_button__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        type: "primary",
+        onClick: this.onAlertConfirm,
+        key: "default-confirm"
+      }, "\u6211\u77E5\u9053\u4E86");
+
+      if (onConfirm || onCancel) {
+        footer = react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_7___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_button__WEBPACK_IMPORTED_MODULE_8__["default"], {
           type: "primary",
           onClick: this.onConfirm,
           key: "confirm"
-        }, confirmTitle));
-        footer.push(react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_button__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        }, confirmTitle), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_button__WEBPACK_IMPORTED_MODULE_8__["default"], {
           onClick: this.onCancel,
           key: "cancel"
         }, cancelTitle));
-      }
-
-      if (!onConfirm && !onCancel) {
-        footer.push(react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_button__WEBPACK_IMPORTED_MODULE_8__["default"], {
-          type: "primary",
-          onClick: this.onAlertConfirm,
-          key: "default-confirm"
-        }, "\u6211\u77E5\u9053\u4E86"));
       }
 
       return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
@@ -16596,8 +16602,8 @@ function (_Component) {
         onTransitionEnd: this.onTransitionEnd,
         ref: this.ref
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: "shiye-sweetalert__header"
-      }, title), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "shiye-sweetalert__header shiye-sweetalert__header-{type}"
+      }, header), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "shiye-sweetalert__body"
       }, content), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "shiye-sweetalert__footer"
@@ -16619,7 +16625,8 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(Swe
   cancelTitle: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.string,
   content: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.node,
   onConfirm: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.func,
-  onCancel: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.func
+  onCancel: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.func,
+  type: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.oneOf([''].concat(types))
 });
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(SweetAlert, "defaultProps", {
@@ -16627,7 +16634,15 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(Swe
   confirmTitle: '确认',
   cancelTitle: '取消',
   onRemove: function onRemove() {},
-  content: ''
+  content: '',
+  type: ''
+});
+
+_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(SweetAlert, "typeMap", {
+  info: 'info-circle',
+  warning: 'alert-circle-o',
+  error: 'cancel-circle-o',
+  success: 'check-circle-o'
 });
 
 /* harmony default export */ __webpack_exports__["default"] = (SweetAlert);

@@ -13990,6 +13990,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var types = ['share-alt', 'chevron-left', 'chevron-right', 'check', 'wrong', 'search', 'download', 'sqauare', 'sqauare-o', 'stop', 'check-circle', 'check-circle-o', 'check-square', 'check-square-o', 'info', 'info-circle', 'alert', 'alert-circle', 'alert-circle-o', 'alert-triangle', 'cancel', 'cancel-circle', 'cancel-circle-o'];
 
 var Icon =
 /*#__PURE__*/
@@ -14008,7 +14009,8 @@ function (_Component) {
       var _this$props = this.props,
           type = _this$props.type,
           cn = _this$props.className;
-      var typeClass = Icon.iconClassMap[type] || Icon.iconClassMap.square;
+      var realType = types.includes(type) ? type : 'square-o';
+      var typeClass = 'icon-' + realType || false;
       var className = classnames__WEBPACK_IMPORTED_MODULE_8___default()('shiye-icon', cn, typeClass);
       return react__WEBPACK_IMPORTED_MODULE_6___default.a.createElement("span", {
         className: className
@@ -14020,22 +14022,11 @@ function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_6__["Component"]);
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_5___default()(Icon, "propTypes", {
-  type: prop_types__WEBPACK_IMPORTED_MODULE_7___default.a.oneOf(['share', 'previous', 'next', 'check', 'wrong', 'search', 'download', 'sqauare'])
+  type: prop_types__WEBPACK_IMPORTED_MODULE_7___default.a.oneOf(types)
 });
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_5___default()(Icon, "defaultProps", {
-  type: 'square'
-});
-
-_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_5___default()(Icon, "iconClassMap", {
-  share: 'icon-share-alt',
-  previous: 'icon-chevron-left',
-  next: 'icon-chevron-right',
-  check: 'icon-check',
-  wrong: 'icon-wrong',
-  search: 'icon-search',
-  download: 'icon-download',
-  square: 'icon-square-o'
+  type: 'square-o'
 });
 
 /* harmony default export */ __webpack_exports__["default"] = (Icon);
@@ -14052,6 +14043,9 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_5___default()(Ico
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _icon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./icon */ "./src/components/icon/icon.jsx");
+/**
+ * http://app.fontastic.me/#customize/GdSq7bSuALPhU65Dsxak75
+ */
 
 /* harmony default export */ __webpack_exports__["default"] = (_icon__WEBPACK_IMPORTED_MODULE_0__["default"]);
 

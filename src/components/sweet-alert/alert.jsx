@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import Button from '../button';
 import Base from '../base';
 import PropTypes from 'prop-types';
+import Icon from '../icon';
 
+const types = ['info', 'success', 'warning', 'error'];
 class SweetAlert extends Component {
   static propTypes = {
     onRemove: PropTypes.func,
@@ -13,6 +15,7 @@ class SweetAlert extends Component {
     content: PropTypes.node,
     onConfirm: PropTypes.func,
     onCancel: PropTypes.func,
+    type: PropTypes.oneOf(['', ...types]),
   }
 
   static defaultProps = {
@@ -21,7 +24,15 @@ class SweetAlert extends Component {
     cancelTitle: '取消',
     onRemove() {},
     content: '',
+    type: '',
   }
+
+  static typeMap = {
+    info: 'info-circle',
+    warning: 'alert-circle-o',
+    error: 'cancel-circle-o',
+    success: 'check-circle-o',
+  };
 
   constructor(props) {
     super(props);
@@ -107,6 +118,10 @@ class SweetAlert extends Component {
     });
   }
 
+  isValidType = (type) => {
+    return types.includes(type);
+  }
+
   render() {
     const {
       offset: { x, y },
@@ -116,6 +131,7 @@ class SweetAlert extends Component {
       transform: `translate3d(${x}px, ${y}px, 0) scale3d(${sx}, ${sy}, 1)`,
     };
     const {
+      type,
       title,
       confirmTitle,
       cancelTitle,
@@ -124,19 +140,26 @@ class SweetAlert extends Component {
       onCancel,
     } = this.props;
 
-    let footer = [];
-    if (onConfirm) {
-      footer.push(
-        <Button type="primary" onClick={this.onConfirm} key="confirm">{confirmTitle}</Button>
-      );
-      footer.push(
-        <Button onClick={this.onCancel} key="cancel">{cancelTitle}</Button>
+    let header = title;
+
+    if (type && this.isValidType(type)) {
+      header = (
+        <>
+          <Icon type={SweetAlert.typeMap[type]} className={type} />
+          {title}
+        </>
       );
     }
-    if (!onConfirm && !onCancel) {
-      footer.push(
-        <Button type="primary" onClick={this.onAlertConfirm} key="default-confirm">我知道了</Button>
-      );
+    let footer = (
+      <Button type="primary" onClick={this.onAlertConfirm} key="default-confirm">我知道了</Button>
+    );
+    if (onConfirm || onCancel) {
+      footer = (
+        <>
+          <Button type="primary" onClick={this.onConfirm} key="confirm">{confirmTitle}</Button>
+          <Button onClick={this.onCancel} key="cancel">{cancelTitle}</Button>
+        </>
+      )
     }
 
     return (
@@ -146,13 +169,9 @@ class SweetAlert extends Component {
         onTransitionEnd={this.onTransitionEnd}
         ref={this.ref}
       >
-        <div className="shiye-sweetalert__header">{title}</div>
-        <div className="shiye-sweetalert__body">
-          {content}
-        </div>
-        <div className="shiye-sweetalert__footer">
-          {footer}
-        </div>
+        <div className="shiye-sweetalert__header shiye-sweetalert__header-{type}">{header}</div>
+        <div className="shiye-sweetalert__body">{content}</div>
+        <div className="shiye-sweetalert__footer">{footer}</div>
       </div>
     );
   }
