@@ -33,7 +33,7 @@ class Popable {
   }
 
   createAndMount(options) {
-    const mountPoint = this.createMountPoint();
+    const mountPoint = this.createMountPoint(options);
     const id = this.instanceCount++;
 
     const instance = this.createComponentInstance({ id, ...options });

@@ -11,7 +11,7 @@ class Notify extends Base {
   static propTypes = {
     toast: PropTypes.shape({
       cb: PropTypes.func,
-      id: PropTypes.string,
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       text: PropTypes.node,
       type: PropTypes.oneOf(['success', 'error']),
       duration: PropTypes.number,

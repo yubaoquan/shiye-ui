@@ -36,7 +36,11 @@ class Container extends Popable {
   // close the alert
   onClick = (e) => {
     const id = this.instanceCount - 1;
-    this.removeById(id);
+    const item = this.instanceList.find(item => item.id === id);
+
+    if (item && item.options.closeableMask) {
+      item.ref.current.remove();
+    }
   }
 
   alert = (options) => {
@@ -45,7 +49,8 @@ class Container extends Popable {
   }
 
   confirm = (options) => {
-    return this.createAndMount(options, 'confirm');
+    const id = this.createAndMount(options, 'confirm');
+    return this.removeById.bind(this, id);
   }
 
   createComponentInstance(options, mode) {
@@ -90,10 +95,9 @@ class Container extends Popable {
   removeById = (id, cb) => {
     const item = this.instanceList.find(item => item.id === id);
 
-    if (!item || !item.options.closeableMask) {
-      return;
+    if (item ) {
+      item.ref.current.remove();
     }
-    item.ref.current.remove();
   }
 
   unmountById = (id) => {
@@ -107,9 +111,7 @@ class Container extends Popable {
       return;
     }
     const item = this.instanceList.splice(itemIndex, 1)[0];
-    console.info(`unmount ${id}`);
 
-    console.info(this.instanceList.length);
     this.unmount(item);
     Base.safeCall(item.options.cb);
   }

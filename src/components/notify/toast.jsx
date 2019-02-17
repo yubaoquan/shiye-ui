@@ -11,7 +11,7 @@ class Toast extends Base {
     duration: PropTypes.number,
     cb: PropTypes.func,
     onAnimationEnd: PropTypes.func,
-    id: PropTypes.string,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }
 
   static defaultProps = {

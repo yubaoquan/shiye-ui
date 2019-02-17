@@ -10687,7 +10687,7 @@ function (_Component) {
       var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
       if (typeof fn === 'function') {
-        fn.apply(null, args);
+        return fn.apply(null, args);
       }
     }
   }], [{
@@ -10696,7 +10696,7 @@ function (_Component) {
       var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
       if (typeof fn === 'function') {
-        fn.apply(null, args);
+        return fn.apply(null, args);
       }
     }
   }]);
@@ -10795,7 +10795,7 @@ function () {
   }, {
     key: "createAndMount",
     value: function createAndMount(options) {
-      var mountPoint = this.createMountPoint();
+      var mountPoint = this.createMountPoint(options);
       var id = this.instanceCount++;
       var instance = this.createComponentInstance(_babel_runtime_helpers_objectSpread__WEBPACK_IMPORTED_MODULE_0___default()({
         id: id
@@ -11096,7 +11096,7 @@ function (_Base) {
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(Notify, "propTypes", {
   toast: prop_types__WEBPACK_IMPORTED_MODULE_12___default.a.shape({
     cb: prop_types__WEBPACK_IMPORTED_MODULE_12___default.a.func,
-    id: prop_types__WEBPACK_IMPORTED_MODULE_12___default.a.string,
+    id: prop_types__WEBPACK_IMPORTED_MODULE_12___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_12___default.a.string, prop_types__WEBPACK_IMPORTED_MODULE_12___default.a.number]),
     text: prop_types__WEBPACK_IMPORTED_MODULE_12___default.a.node,
     type: prop_types__WEBPACK_IMPORTED_MODULE_12___default.a.oneOf(['success', 'error']),
     duration: prop_types__WEBPACK_IMPORTED_MODULE_12___default.a.number
@@ -11231,7 +11231,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(Toa
   duration: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.number,
   cb: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func,
   onAnimationEnd: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.func,
-  id: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.string
+  id: prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.string, prop_types__WEBPACK_IMPORTED_MODULE_8___default.a.number])
 });
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(Toast, "defaultProps", {

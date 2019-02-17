@@ -10744,7 +10744,7 @@ function (_Component) {
       var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
       if (typeof fn === 'function') {
-        fn.apply(null, args);
+        return fn.apply(null, args);
       }
     }
   }], [{
@@ -10753,7 +10753,7 @@ function (_Component) {
       var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
       if (typeof fn === 'function') {
-        fn.apply(null, args);
+        return fn.apply(null, args);
       }
     }
   }]);
@@ -10852,7 +10852,7 @@ function () {
   }, {
     key: "createAndMount",
     value: function createAndMount(options) {
-      var mountPoint = this.createMountPoint();
+      var mountPoint = this.createMountPoint(options);
       var id = this.instanceCount++;
       var instance = this.createComponentInstance(_babel_runtime_helpers_objectSpread__WEBPACK_IMPORTED_MODULE_0___default()({
         id: id
@@ -11321,13 +11321,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _container__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./container */ "./src/components/sweet-alert/container.js");
-/* harmony import */ var _button__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../button */ "./src/components/button/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_11__);
-
+/* harmony import */ var _button__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../button */ "./src/components/button/index.js");
+/* harmony import */ var _base__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../base */ "./src/components/base/index.jsx");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_10__);
 
 
 
@@ -11368,7 +11365,20 @@ function (_Component) {
       }
     });
 
-    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5___default()(_this)), "onConfirmBtnClick", function () {
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5___default()(_this)), "onAlertConfirm", function () {
+      _this.remove();
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5___default()(_this)), "onConfirm", function () {
+      var ret = _base__WEBPACK_IMPORTED_MODULE_9__["default"].safeCall(_this.props.onConfirm);
+      Promise.resolve(ret).then(function () {
+        _this.remove();
+      });
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5___default()(_this)), "onCancel", function () {
+      _base__WEBPACK_IMPORTED_MODULE_9__["default"].safeCall(_this.props.onCancel);
+
       _this.remove();
     });
 
@@ -11459,7 +11469,32 @@ function (_Component) {
       var _this$props = this.props,
           title = _this$props.title,
           confirmTitle = _this$props.confirmTitle,
-          content = _this$props.content;
+          cancelTitle = _this$props.cancelTitle,
+          content = _this$props.content,
+          onConfirm = _this$props.onConfirm,
+          onCancel = _this$props.onCancel;
+      var footer = [];
+
+      if (onConfirm) {
+        footer.push(react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_button__WEBPACK_IMPORTED_MODULE_8__["default"], {
+          type: "primary",
+          onClick: this.onConfirm,
+          key: "confirm"
+        }, confirmTitle));
+        footer.push(react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_button__WEBPACK_IMPORTED_MODULE_8__["default"], {
+          onClick: this.onCancel,
+          key: "cancel"
+        }, cancelTitle));
+      }
+
+      if (!onConfirm && !onCancel) {
+        footer.push(react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_button__WEBPACK_IMPORTED_MODULE_8__["default"], {
+          type: "primary",
+          onClick: this.onAlertConfirm,
+          key: "default-confirm"
+        }, "\u6211\u77E5\u9053\u4E86"));
+      }
+
       return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "shiye-sweetalert",
         style: style,
@@ -11471,10 +11506,7 @@ function (_Component) {
         className: "shiye-sweetalert__body"
       }, content), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "shiye-sweetalert__footer"
-      }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_button__WEBPACK_IMPORTED_MODULE_10__["default"], {
-        type: "primary",
-        onClick: this.onConfirmBtnClick
-      }, confirmTitle)));
+      }, footer));
     }
   }]);
 
@@ -11482,19 +11514,23 @@ function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_7__["Component"]);
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(SweetAlert, "propTypes", {
-  onRemove: prop_types__WEBPACK_IMPORTED_MODULE_11___default.a.func,
-  position: prop_types__WEBPACK_IMPORTED_MODULE_11___default.a.shape({
-    x: prop_types__WEBPACK_IMPORTED_MODULE_11___default.a.number,
-    y: prop_types__WEBPACK_IMPORTED_MODULE_11___default.a.number
+  onRemove: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.func,
+  position: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.shape({
+    x: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.number,
+    y: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.number
   }),
-  title: prop_types__WEBPACK_IMPORTED_MODULE_11___default.a.string,
-  confirmTitle: prop_types__WEBPACK_IMPORTED_MODULE_11___default.a.string,
-  content: prop_types__WEBPACK_IMPORTED_MODULE_11___default.a.node
+  title: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.string,
+  confirmTitle: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.string,
+  cancelTitle: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.string,
+  content: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.node,
+  onConfirm: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.func,
+  onCancel: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.func
 });
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(SweetAlert, "defaultProps", {
   title: '提示',
-  confirmTitle: '我知道了',
+  confirmTitle: '确认',
+  cancelTitle: '取消',
   onRemove: function onRemove() {},
   content: ''
 });
@@ -11580,7 +11616,13 @@ function (_Popable) {
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_9___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8___default()(_this)), "onClick", function (e) {
       var id = _this.instanceCount - 1;
 
-      _this.removeById(id);
+      var item = _this.instanceList.find(function (item) {
+        return item.id === id;
+      });
+
+      if (item && item.options.closeableMask) {
+        item.ref.current.remove();
+      }
     });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_9___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8___default()(_this)), "alert", function (options) {
@@ -11590,7 +11632,9 @@ function (_Popable) {
     });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_9___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8___default()(_this)), "confirm", function (options) {
-      return _this.createAndMount(options, 'confirm');
+      var id = _this.createAndMount(options, 'confirm');
+
+      return _this.removeById.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8___default()(_this)), id);
     });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_9___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8___default()(_this)), "config", function (_cfg) {
@@ -11612,11 +11656,9 @@ function (_Popable) {
         return item.id === id;
       });
 
-      if (!item || !item.options.closeableMask) {
-        return;
+      if (item) {
+        item.ref.current.remove();
       }
-
-      item.ref.current.remove();
     });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_9___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8___default()(_this)), "unmountById", function (id) {
@@ -11633,9 +11675,6 @@ function (_Popable) {
       }
 
       var item = _this.instanceList.splice(itemIndex, 1)[0];
-
-      console.info("unmount ".concat(id));
-      console.info(_this.instanceList.length);
 
       _this.unmount(item);
 

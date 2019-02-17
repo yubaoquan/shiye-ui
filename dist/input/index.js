@@ -13920,7 +13920,7 @@ function (_Component) {
       var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
       if (typeof fn === 'function') {
-        fn.apply(null, args);
+        return fn.apply(null, args);
       }
     }
   }], [{
@@ -13929,7 +13929,7 @@ function (_Component) {
       var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
       if (typeof fn === 'function') {
-        fn.apply(null, args);
+        return fn.apply(null, args);
       }
     }
   }]);

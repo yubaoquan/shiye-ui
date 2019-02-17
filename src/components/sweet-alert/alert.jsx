@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { removeById, getRoot } from './container';
 import Button from '../button';
-
+import Base from '../base';
 import PropTypes from 'prop-types';
 
 class SweetAlert extends Component {
@@ -11,12 +9,16 @@ class SweetAlert extends Component {
     position: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number }),
     title: PropTypes.string,
     confirmTitle: PropTypes.string,
+    cancelTitle: PropTypes.string,
     content: PropTypes.node,
+    onConfirm: PropTypes.func,
+    onCancel: PropTypes.func,
   }
 
   static defaultProps = {
     title: '提示',
-    confirmTitle: '我知道了',
+    confirmTitle: '确认',
+    cancelTitle: '取消',
     onRemove() {},
     content: '',
   }
@@ -73,8 +75,21 @@ class SweetAlert extends Component {
     }
   }
 
-  onConfirmBtnClick = () => {
+  onAlertConfirm = () => {
     this.remove()
+  }
+
+  onConfirm = () => {
+    const ret = Base.safeCall(this.props.onConfirm);
+    Promise.resolve(ret)
+      .then(() => {
+        this.remove();
+      });
+  }
+
+  onCancel = () => {
+    Base.safeCall(this.props.onCancel);
+    this.remove();
   }
 
   /**
@@ -100,7 +115,29 @@ class SweetAlert extends Component {
     const style = {
       transform: `translate3d(${x}px, ${y}px, 0) scale3d(${sx}, ${sy}, 1)`,
     };
-    const { title, confirmTitle, content } = this.props;
+    const {
+      title,
+      confirmTitle,
+      cancelTitle,
+      content,
+      onConfirm,
+      onCancel,
+    } = this.props;
+
+    let footer = [];
+    if (onConfirm) {
+      footer.push(
+        <Button type="primary" onClick={this.onConfirm} key="confirm">{confirmTitle}</Button>
+      );
+      footer.push(
+        <Button onClick={this.onCancel} key="cancel">{cancelTitle}</Button>
+      );
+    }
+    if (!onConfirm && !onCancel) {
+      footer.push(
+        <Button type="primary" onClick={this.onAlertConfirm} key="default-confirm">我知道了</Button>
+      );
+    }
 
     return (
       <div
@@ -114,7 +151,7 @@ class SweetAlert extends Component {
           {content}
         </div>
         <div className="shiye-sweetalert__footer">
-          <Button type="primary" onClick={this.onConfirmBtnClick}>{confirmTitle}</Button>
+          {footer}
         </div>
       </div>
     );

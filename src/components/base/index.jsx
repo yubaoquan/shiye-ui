@@ -6,6 +6,7 @@ class Base extends Component {
   static propTypes = {
     prefix: PropTypes.string,
     className: PropTypes.string,
+
   }
 
   static defaultProps = {
@@ -23,13 +24,13 @@ class Base extends Component {
 
   safeCall(fn, args = []) {
     if (typeof fn === 'function') {
-      fn.apply(null, args);
+      return fn.apply(null, args);
     }
   }
 
   static safeCall(fn, args = []) {
     if (typeof fn === 'function') {
-      fn.apply(null, args);
+      return fn.apply(null, args);
     }
   }
 }
