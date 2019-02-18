@@ -11333,6 +11333,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var types = ['info', 'success', 'warning', 'error'];
+var confirmTypes = ['default', 'primary', 'danger', 'success'];
 
 var SweetAlert =
 /*#__PURE__*/
@@ -11349,15 +11350,17 @@ function (_Component) {
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5___default()(_this)), "onTransitionEnd", function (e) {
       if (e.target !== _this.ref.current) {
         return;
-      } // 第一次transitionEnd是进入的动画执行完
-      // 第二次transitionEnd的退出的动画执行完
+      }
 
+      _this.transitionCount++; // 第一次transitionEnd是进入的动画执行完
+      // 第二次transitionEnd的退出的动画执行完
 
       if (_this.state.ready2Remove) {
         _this.props.onRemove(_this.props.id);
       } else {
+        // transition 监听了两个属性 transform 和 opacity, 所以进入的动画会触发两次transitionEnd
         _this.setState({
-          ready2Remove: true
+          ready2Remove: _this.transitionCount === 2
         });
       }
     });
@@ -11377,6 +11380,10 @@ function (_Component) {
       _base__WEBPACK_IMPORTED_MODULE_9__["default"].safeCall(_this.props.onCancel);
 
       _this.remove();
+    });
+
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5___default()(_this)), "remove", function () {
+      _this.prepareRemove();
     });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_5___default()(_this)), "isValidType", function (type) {
@@ -11410,7 +11417,8 @@ function (_Component) {
       scale: {
         x: 0,
         y: 0
-      }
+      },
+      opacity: 0
     };
     setTimeout(function () {
       _this.setState({
@@ -11421,23 +11429,16 @@ function (_Component) {
         scale: {
           x: 1,
           y: 1
-        }
+        },
+        opacity: 1
       });
     }, 0);
+    _this.transitionCount = 0;
     return _this;
   } // 防止容器内其他元素的 transitionEnd 触发这里的逻辑
 
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_1___default()(SweetAlert, [{
-    key: "remove",
-
-    /**
-     * 提供给container调用
-     */
-    value: function remove() {
-      this.prepareRemove();
-    }
-  }, {
     key: "prepareRemove",
     value: function prepareRemove() {
       var _this$state$outOffset = this.state.outOffset,
@@ -11449,9 +11450,10 @@ function (_Component) {
           y: y
         },
         scale: {
-          x: 0,
-          y: 0
-        }
+          x: .2,
+          y: .2
+        },
+        opacity: 0
       });
     }
   }, {
@@ -11463,18 +11465,21 @@ function (_Component) {
           y = _this$state$offset.y,
           _this$state$scale = _this$state.scale,
           sx = _this$state$scale.x,
-          sy = _this$state$scale.y;
+          sy = _this$state$scale.y,
+          opacity = _this$state.opacity;
       var style = {
+        opacity: opacity,
         transform: "translate3d(".concat(x, "px, ").concat(y, "px, 0) scale3d(").concat(sx, ", ").concat(sy, ", 1)")
       };
       var _this$props = this.props,
           type = _this$props.type,
           title = _this$props.title,
-          confirmTitle = _this$props.confirmTitle,
-          cancelTitle = _this$props.cancelTitle,
+          confirmText = _this$props.confirmText,
+          cancelText = _this$props.cancelText,
           content = _this$props.content,
           onConfirm = _this$props.onConfirm,
-          onCancel = _this$props.onCancel;
+          confirmTypeProp = _this$props.confirmType,
+          closeBtn = _this$props.closeBtn;
       var header = title;
 
       if (type && this.isValidType(type)) {
@@ -11484,21 +11489,26 @@ function (_Component) {
         }), title);
       }
 
+      var confirmType = confirmTypes.includes(confirmTypeProp) ? confirmTypeProp : null;
+      var closeBtnElement = react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("span", {
+        className: "shiye-sweetalert__close-btn",
+        onClick: this.remove
+      }, "\xD7");
       var footer = react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_button__WEBPACK_IMPORTED_MODULE_8__["default"], {
         type: "primary",
         onClick: this.onAlertConfirm,
         key: "default-confirm"
       }, "\u6211\u77E5\u9053\u4E86");
 
-      if (onConfirm || onCancel) {
+      if (onConfirm || confirmType) {
         footer = react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_7___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_button__WEBPACK_IMPORTED_MODULE_8__["default"], {
-          type: "primary",
+          type: confirmType,
           onClick: this.onConfirm,
           key: "confirm"
-        }, confirmTitle), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_button__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        }, confirmText), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_button__WEBPACK_IMPORTED_MODULE_8__["default"], {
           onClick: this.onCancel,
           key: "cancel"
-        }, cancelTitle));
+        }, cancelText));
       }
 
       return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
@@ -11507,8 +11517,8 @@ function (_Component) {
         onTransitionEnd: this.onTransitionEnd,
         ref: this.ref
       }, react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
-        className: "shiye-sweetalert__header shiye-sweetalert__header-{type}"
-      }, header), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+        className: "shiye-sweetalert__header shiye-sweetalert__header-".concat(type)
+      }, header, closeBtn && closeBtnElement), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "shiye-sweetalert__body"
       }, content), react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         className: "shiye-sweetalert__footer"
@@ -11526,21 +11536,24 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(Swe
     y: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.number
   }),
   title: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.string,
-  confirmTitle: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.string,
-  cancelTitle: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.string,
   content: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.node,
   onConfirm: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.func,
   onCancel: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.func,
-  type: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.oneOf([''].concat(types))
+  type: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.oneOf([''].concat(types)),
+  confirmText: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.string,
+  cancelText: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.string,
+  confirmType: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.oneOf(confirmTypes),
+  closeBtn: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.bool
 });
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(SweetAlert, "defaultProps", {
   title: '提示',
-  confirmTitle: '确认',
-  cancelTitle: '取消',
   onRemove: function onRemove() {},
   content: '',
-  type: ''
+  type: '',
+  confirmText: '确认',
+  cancelText: '取消',
+  closeBtn: false
 });
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_6___default()(SweetAlert, "typeMap", {

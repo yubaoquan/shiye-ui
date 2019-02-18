@@ -360,10 +360,10 @@
   max-width: 75%;
   border-radius: 4px;
   background-color: #fff;
-  -webkit-transition: -webkit-transform 200ms ease-out;
-  transition: -webkit-transform 200ms ease-out;
-  transition: transform 200ms ease-out;
-  transition: transform 200ms ease-out, -webkit-transform 200ms ease-out;
+  -webkit-transition: opacity 200ms ease-out, -webkit-transform 200ms ease-out;
+  transition: opacity 200ms ease-out, -webkit-transform 200ms ease-out;
+  transition: transform 200ms ease-out, opacity 200ms ease-out;
+  transition: transform 200ms ease-out, opacity 200ms ease-out, -webkit-transform 200ms ease-out;
   padding: 20px;
 }
 .shiye-sweetalert__header {
@@ -372,6 +372,7 @@
   margin: 0;
   box-sizing: border-box;
   margin-bottom: 20px;
+  position: relative;
 }
 .shiye-sweetalert__header .shiye-icon {
   vertical-align: -2px;
@@ -389,29 +390,59 @@
 .shiye-sweetalert__header .shiye-icon.success {
   color: #4b0;
 }
+.shiye-sweetalert__close-btn {
+  position: absolute;
+  display: inline-block;
+  top: 0;
+  right: 0;
+  color: #999;
+  font-size: 20px;
+  line-height: 12px;
+  text-align: right;
+  vertical-align: middle;
+  cursor: pointer;
+  border: none;
+  background-color: #fff;
+  outline: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  padding: 0;
+  margin: 0;
+}
 .shiye-sweetalert__footer {
   text-align: right;
   margin-top: 30px;
 }
 @-webkit-keyframes appear {
-  from {
+  0% {
     opacity: 0;
   }
-  to {
+  30% {
+    opacity: 0;
+  }
+  100% {
     opacity: 1;
   }
 }
 @keyframes appear {
-  from {
+  0% {
     opacity: 0;
   }
-  to {
+  30% {
+    opacity: 0;
+  }
+  100% {
     opacity: 1;
   }
 }
 @-webkit-keyframes disappear {
   0% {
     opacity: 1;
+  }
+  70% {
+    opacity: 0;
   }
   100% {
     opacity: 0;
@@ -420,6 +451,9 @@
 @keyframes disappear {
   0% {
     opacity: 1;
+  }
+  70% {
+    opacity: 0;
   }
   100% {
     opacity: 0;

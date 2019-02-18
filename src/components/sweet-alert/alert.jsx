@@ -5,26 +5,30 @@ import PropTypes from 'prop-types';
 import Icon from '../icon';
 
 const types = ['info', 'success', 'warning', 'error'];
+const confirmTypes = ['default', 'primary', 'danger', 'success'];
 class SweetAlert extends Component {
   static propTypes = {
     onRemove: PropTypes.func,
     position: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number }),
     title: PropTypes.string,
-    confirmTitle: PropTypes.string,
-    cancelTitle: PropTypes.string,
     content: PropTypes.node,
     onConfirm: PropTypes.func,
     onCancel: PropTypes.func,
     type: PropTypes.oneOf(['', ...types]),
+    confirmText: PropTypes.string,
+    cancelText: PropTypes.string,
+    confirmType: PropTypes.oneOf(confirmTypes),
+    closeBtn: PropTypes.bool,
   }
 
   static defaultProps = {
     title: '提示',
-    confirmTitle: '确认',
-    cancelTitle: '取消',
     onRemove() {},
     content: '',
     type: '',
+    confirmText: '确认',
+    cancelText: '取消',
+    closeBtn: false,
   }
 
   static typeMap = {
@@ -61,14 +65,18 @@ class SweetAlert extends Component {
         x: 0,
         y: 0,
       },
+      opacity: 0,
     };
 
     setTimeout(() => {
       this.setState({
         offset: { x: 0, y: 0 },
         scale: { x: 1, y: 1 },
+        opacity: 1,
       });
     }, 0);
+
+    this.transitionCount = 0;
   }
 
   // 防止容器内其他元素的 transitionEnd 触发这里的逻辑
@@ -76,13 +84,15 @@ class SweetAlert extends Component {
     if (e.target !== this.ref.current) {
       return;
     }
+    this.transitionCount++;
 
     // 第一次transitionEnd是进入的动画执行完
     // 第二次transitionEnd的退出的动画执行完
     if (this.state.ready2Remove) {
       this.props.onRemove(this.props.id);
     } else {
-      this.setState({ ready2Remove: true });
+      // transition 监听了两个属性 transform 和 opacity, 所以进入的动画会触发两次transitionEnd
+      this.setState({ ready2Remove: this.transitionCount === 2 });
     }
   }
 
@@ -106,7 +116,7 @@ class SweetAlert extends Component {
   /**
    * 提供给container调用
    */
-  remove() {
+  remove = () => {
     this.prepareRemove();
   }
 
@@ -114,7 +124,8 @@ class SweetAlert extends Component {
     const { x, y } = this.state.outOffset;
     this.setState({
       offset: { x, y },
-      scale: { x: 0, y: 0 },
+      scale: { x: .2, y: .2 },
+      opacity: 0,
     });
   }
 
@@ -125,19 +136,22 @@ class SweetAlert extends Component {
   render() {
     const {
       offset: { x, y },
-      scale: { x: sx, y: sy }
+      scale: { x: sx, y: sy },
+      opacity,
     } = this.state;
     const style = {
+      opacity,
       transform: `translate3d(${x}px, ${y}px, 0) scale3d(${sx}, ${sy}, 1)`,
     };
     const {
       type,
       title,
-      confirmTitle,
-      cancelTitle,
+      confirmText,
+      cancelText,
       content,
       onConfirm,
-      onCancel,
+      confirmType: confirmTypeProp,
+      closeBtn,
     } = this.props;
 
     let header = title;
@@ -148,16 +162,30 @@ class SweetAlert extends Component {
           <Icon type={SweetAlert.typeMap[type]} className={type} />
           {title}
         </>
-      );
-    }
+    );
+  }
+
+    const confirmType = confirmTypes.includes(confirmTypeProp) ? confirmTypeProp : null;
+
+    const closeBtnElement = (
+      <span
+        className="shiye-sweetalert__close-btn"
+        onClick={this.remove}
+      >×</span>
+    );
+
     let footer = (
       <Button type="primary" onClick={this.onAlertConfirm} key="default-confirm">我知道了</Button>
     );
-    if (onConfirm || onCancel) {
+    if (onConfirm || confirmType) {
       footer = (
         <>
-          <Button type="primary" onClick={this.onConfirm} key="confirm">{confirmTitle}</Button>
-          <Button onClick={this.onCancel} key="cancel">{cancelTitle}</Button>
+          <Button
+            type={confirmType}
+            onClick={this.onConfirm}
+            key="confirm"
+          >{confirmText}</Button>
+          <Button onClick={this.onCancel} key="cancel">{cancelText}</Button>
         </>
       )
     }
@@ -169,7 +197,10 @@ class SweetAlert extends Component {
         onTransitionEnd={this.onTransitionEnd}
         ref={this.ref}
       >
-        <div className="shiye-sweetalert__header shiye-sweetalert__header-{type}">{header}</div>
+        <div className={`shiye-sweetalert__header shiye-sweetalert__header-${type}`}>
+          {header}
+          {closeBtn && closeBtnElement}
+        </div>
         <div className="shiye-sweetalert__body">{content}</div>
         <div className="shiye-sweetalert__footer">{footer}</div>
       </div>
